@@ -3,28 +3,63 @@
 namespace Project_Euler
 {
     using System;
+    using Utils;
 
     class Problem151
     {
         static void Main(string[] args)
         {
-            var totalNumberBranches = 0;
-            var initialNumber = "2345";
-            var equivalency = new Dictionary<string, string> { { "2", "345" }, { "3", "45" }, { "4", "5" }, { "5", " " } };
-
-            // Number of branches found it for [index] matched 
-            var fiveList = new List<int> { 0, 0, 0, 0 };
-            var fourList = new List<int> { 1, 0, 0, 0 };
-            var threeList = new List<int> { 2, 2, 0, 0};
-            var twoList = new List<int>();
-
-            var initialList = new Dictionary<string, List<int>> { { "5", fiveList }, { "4", fourList }, { "3", threeList }, { "2", twoList } };
+            var probabilidadParaCero = 0;
+            var probabilidadParaUno = 0;
+            var probalidadParaDos = 0;
+            var probalidadParaTres = 0;
+            var numeroTotalDeRamas = 0;
+            var arbol = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
 
             //Build the tree
+            for ( var i = 0; i < arbol.GetNode().Count; i++ )
+            {
+                var probabilidadDelNivel = 1 / arbol.GetNode().Count;
+
+                var nuevoNodo = new List<int>();
+                if (arbol.GetNode()[i] == 2)
+                {
+                    nuevoNodo.Add(3);
+                    nuevoNodo.Add(4);
+                    nuevoNodo.Add(5);
+                }
+                if (arbol.GetNode()[i] == 3)
+                {
+                    nuevoNodo.Add(4);
+                    nuevoNodo.Add(5);
+                }
+                if (arbol.GetNode()[i] == 4)
+                {
+                    nuevoNodo.Add(5);
+                }
+
+                for (var j = 0; j < arbol.GetNode().Count; j++ )
+                {
+                    if (j != i)
+                    {
+                        nuevoNodo.Add(arbol.GetNode()[j]);
+                    }
+                }
+                if (arbol.GetNode()[i] != arbol.GetNode()[i + 1])
+                {
+                    calculoNuevoNivel(arbol);
+                }else
+                {
+                    //La misma probabilidad anterior
+                }
+            }
             //Traverse taken the probability
             //Check in the same level if the number it was already calculated
             //Save this whole number of this level in a list.
+            var probabilidadTotal = probabilidadParaCero + probabilidadParaUno + probalidadParaDos + probalidadParaTres;
 
+            Console.WriteLine(probabilidadTotal / numeroTotalDeRamas);
+            Console.ReadKey();
         }
     }
 }

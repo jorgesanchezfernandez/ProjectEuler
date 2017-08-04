@@ -28,6 +28,11 @@ namespace Project_Euler.Utils
             return null;
         }
 
+        public T GetNode()
+        {
+            return data;
+        }
+
         public void Traverse(NTree<T> node, TreeVisitor<T> visitor)
         {
             visitor(node.data);
