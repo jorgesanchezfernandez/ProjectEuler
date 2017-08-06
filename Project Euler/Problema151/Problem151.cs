@@ -10,6 +10,9 @@ namespace Project_Euler
     {
         static void Main(string[] args)
         {
+            // Inicia el contador:
+            DateTime tiempo1 = DateTime.Now;
+
             var probabilidadesTotalPara = new List<double> { 0, 0, 0, 0 };
             var sumatorioDeLaprobabilidadDeLaRama = 1.0;
 
@@ -32,9 +35,14 @@ namespace Project_Euler
             //Save this whole number of this level in a list.
             var probabilidadTotal = probabilidadesTotalPara[0] + probabilidadesTotalPara[1] + probabilidadesTotalPara[2] + probabilidadesTotalPara[3];
 
-            Console.WriteLine(probabilidadTotal);
-            Console.WriteLine(numeroTotalDeRamas);
-            Console.WriteLine(probabilidadTotal / numeroTotalDeRamas);
+            // Para el contador e imprime el resultado:
+            DateTime tiempo2 = DateTime.Now;
+            TimeSpan total = new TimeSpan(tiempo2.Ticks - tiempo1.Ticks);
+            Console.WriteLine("TIEMPO: " + total.TotalSeconds.ToString());
+            Console.WriteLine("PROBABILIDAD TOTAL: " + probabilidadTotal);
+            Console.WriteLine("TOTAL NUMERO DE RAMAS: " + numeroTotalDeRamas);
+            Console.WriteLine("MEDIA: " + probabilidadTotal / numeroTotalDeRamas);
+
             Console.ReadKey();
         }
 
