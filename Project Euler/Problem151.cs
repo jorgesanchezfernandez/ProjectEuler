@@ -17,29 +17,47 @@ namespace Project_Euler
 
             var numeroTotalDeRamas = 0;
             var arbol = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
-            var numeroSolitariosEncontrados = 0;
+            var numeroSolitariosEncontradosIda = 0;
+            var numeroSolitariosEncontradosVuelta = 0;
             var listaMemoriaProbabilidades = new Dictionary<List<int>, List<double>>();
 
             //Build the tree
-            CalculoNuevoNivel(listaMemoriaProbabilidades, ref probabilidadesAcumuladaDelNodoPara, probabilidadesTotalPara, ref sumatorioDeProbabilidadDelNodoActual, ref sumatorioDeLaprobabilidadDeLaRama, arbol, ref numeroSolitariosEncontrados);
+            CalculoNuevoNivel(listaMemoriaProbabilidades, ref probabilidadesAcumuladaDelNodoPara, probabilidadesTotalPara, ref sumatorioDeProbabilidadDelNodoActual, ref sumatorioDeLaprobabilidadDeLaRama, arbol, ref numeroSolitariosEncontradosIda, ref numeroSolitariosEncontradosVuelta, ref numeroTotalDeRamas);
             //Traverse taken the probability
             //Check in the same level if the number it was already calculated
             //Save this whole number of this level in a list.
             var probabilidadTotal = probabilidadesTotalPara[0] + probabilidadesTotalPara[1] + probabilidadesTotalPara[2] + probabilidadesTotalPara[3];
 
+            Console.WriteLine(probabilidadTotal);
+            Console.WriteLine(numeroTotalDeRamas);
             Console.WriteLine(probabilidadTotal / numeroTotalDeRamas);
             Console.ReadKey();
         }
 
-        private static void CalculoNuevoNivel(Dictionary<List<int>, List<double>> listaMemoriaProbabilidades, ref List<double> probabilidadesAcumuladaDelNodoPara, List<double> probabilidadesTotalPara, ref double sumatorioDeProbabilidadDelNodoActual, ref double sumatorioDeLaprobabilidadDeLaRama, NTree<List<int>> arbol, ref int numeroSolitariosEncontrados)
+        private static void CalculoNuevoNivel(Dictionary<List<int>, List<double>> listaMemoriaProbabilidades, ref List<double> probabilidadesAcumuladaDelNodoPara, List<double> probabilidadesTotalPara, ref double sumatorioDeProbabilidadDelNodoActual, ref double sumatorioDeLaprobabilidadDeLaRama, NTree<List<int>> arbol, ref int numeroSolitariosEncontradosIda, ref int numeroSolitariosEncontradosVuelta, ref int numeroTotalDeRamas)
         {
             // Cálculo de probabilidades por nivel y sumatorio de la rama
             var numeroElementosDelNodo = Convert.ToDouble(arbol.GetNode().Count);
             var probabilidadDelNivel = 1 / numeroElementosDelNodo;
+            sumatorioDeLaprobabilidadDeLaRama = sumatorioDeLaprobabilidadDeLaRama * probabilidadDelNivel;
 
             // Recorremos cada elemento del nodo
             for (var i = arbol.GetNode().Count - 1; i >= 0; i--)
             {
+                if (arbol.GetNode().Count == 1)
+                {
+                    if (arbol.GetNode()[i] == 5)
+                    {
+                        numeroSolitariosEncontradosVuelta = 0;
+                        numeroTotalDeRamas++;
+                        probabilidadesTotalPara[numeroSolitariosEncontradosIda] += sumatorioDeLaprobabilidadDeLaRama;
+                    }
+                    else
+                    {
+                        numeroSolitariosEncontradosIda++;
+                    }
+                }
+
                 if ((arbol.GetNode()[i] != 5) || ((arbol.GetNode()[i] == 5)&&(arbol.GetNode().Count > 1)))
                 {
                     // Creamos el nuevo nodo por cada uno de los numeros
@@ -47,17 +65,18 @@ namespace Project_Euler
 
                     var nuevoArbol = new NTree<List<int>>(nuevoNodo);
 
-                    if ((i == arbol.GetNode().Count - 1) || ((i < arbol.GetNode().Count - 1) && (arbol.GetNode()[i] != arbol.GetNode()[i + 1])) || !listaMemoriaProbabilidades.ContainsKey(nuevoNodo))
+                    if (((i == arbol.GetNode().Count - 1) || ((i < arbol.GetNode().Count - 1) && (arbol.GetNode()[i] != arbol.GetNode()[i + 1]))) && !listaMemoriaProbabilidades.ContainsKey(nuevoNodo))
                     {
-                        CalculoNuevoNivel(listaMemoriaProbabilidades, ref probabilidadesAcumuladaDelNodoPara, probabilidadesTotalPara, ref sumatorioDeProbabilidadDelNodoActual, ref sumatorioDeLaprobabilidadDeLaRama, nuevoArbol, ref numeroSolitariosEncontrados);
+                        CalculoNuevoNivel(listaMemoriaProbabilidades, ref probabilidadesAcumuladaDelNodoPara, probabilidadesTotalPara, ref sumatorioDeProbabilidadDelNodoActual, ref sumatorioDeLaprobabilidadDeLaRama, nuevoArbol, ref numeroSolitariosEncontradosIda, ref numeroSolitariosEncontradosVuelta, ref numeroTotalDeRamas);
                         
                         // Sumamos un solitario encontrado
                         if ((nuevoArbol.GetNode().Count == 1)&&(nuevoArbol.GetNode()[0] != 5))
                         {
-                            numeroSolitariosEncontrados++;
+                            numeroSolitariosEncontradosIda--;
+                            numeroSolitariosEncontradosVuelta++;
                         }
                         var numeroElementosDelNuevoNodo = Convert.ToDouble(nuevoArbol.GetNode().Count);
-                        probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontrados] = probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontrados] * (1 / numeroElementosDelNuevoNodo);
+                        probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontradosVuelta] = probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontradosVuelta] * (1 / numeroElementosDelNuevoNodo);
                         listaMemoriaProbabilidades.Add(nuevoArbol.GetNode(), probabilidadesAcumuladaDelNodoPara);
                     }
                     else
@@ -73,7 +92,7 @@ namespace Project_Euler
                     }
                 }      
             }
-            probabilidadesTotalPara[numeroSolitariosEncontrados] += probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontrados];
+
         }
 
         private static List<int> CrearNuevoNodo(NTree<List<int>> arbol, int i)
