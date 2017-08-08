@@ -2,15 +2,15 @@
 
 namespace Project_Euler.Utils
 {
-    public delegate void TreeVisitor<T>(T nodeData);
-
     public class NTree<T>
     {
+        private bool visited;
         private T data;
         private LinkedList<NTree<T>> children;
-
+        
         public NTree(T data)
         {
+            this.visited = false;
             this.data = data;
             children = new LinkedList<NTree<T>>();
         }
@@ -23,9 +23,19 @@ namespace Project_Euler.Utils
         public NTree<T> GetChild(int i)
         {
             foreach (NTree<T> n in children)
+            {
                 if (--i == 0)
+                {
+                    visited = true;
                     return n;
+                }
+            }
             return null;
+        }
+
+        public LinkedList<NTree<T>> GetChildren()
+        {
+            return children;
         }
 
         public T GetNode()
@@ -33,24 +43,32 @@ namespace Project_Euler.Utils
             return data;
         }
 
-        public void Traverse(NTree<T> node, TreeVisitor<T> visitor)
+        public bool IsLeaf
         {
-            visitor(node.data);
-            foreach (NTree<T> kid in node.children)
-                Traverse(kid, visitor);
-        }
-
-        public int TraverseTakenProbabilities(NTree<T> node, TreeVisitor<T> visitor)
-        {
-            var probabilityInLevel = 1 / node.children.Count;
-            
-            foreach (NTree<T> kid in node.children)
+            get
             {
-                var probabilityLevelMinus1 = TraverseTakenProbabilities(kid, visitor);
-                probabilityInLevel = probabilityInLevel * probabilityLevelMinus1;
+                return children.Count == 0;
             }
-
-            return probabilityInLevel;
         }
+
+        //public void Traverse(NTree<T> node)
+        //{
+        //    if (!IsRepeated())
+        //    {
+        //        if(node.IsLeaf)
+        //        {
+        //            SetValues();
+        //        }else
+        //        {
+        //            foreach (NTree<T> kid in node.children)
+        //            {
+        //                Traverse(kid);
+        //            }
+        //        } 
+        //    }else
+        //    {
+        //        GetValues();
+        //    }
+        //}
     }
 }
