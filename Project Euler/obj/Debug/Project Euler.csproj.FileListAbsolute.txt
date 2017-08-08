@@ -9,3 +9,4 @@ C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project 
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\bin\Debug\Project Euler.pdb
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\obj\Debug\Project Euler.exe
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\obj\Debug\Project Euler.pdb
+C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\obj\Debug\Project Euler.csprojResolveAssemblyReference.cache

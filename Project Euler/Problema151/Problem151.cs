@@ -21,8 +21,6 @@ namespace Project_Euler
             var sumatorioDeLaprobabilidadDeLaRama = 1.0;
 
             var probabilidadesAcumuladaDelNodoPara = new List<double> { 1, 1, 1, 1 };
-            var sumatorioDeProbabilidadDelNodoActual = 1.0;
-
             
             var arbol = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
             var numeroSolitariosEncontradosIda = 0;
@@ -32,7 +30,7 @@ namespace Project_Euler
             var memoria = new MemoriaParaP151(listaMemoriaProbabilidades, 0);
 
             //Build the tree
-            CalculoNuevoNivel(ref memoria, sumatorioDeLaprobabilidadDeLaRama, ref probabilidadesAcumuladaDelNodoPara, ref sumatorioDeProbabilidadDelNodoActual, arbol, ref numeroSolitariosEncontradosIda, out numHojasPorNivel);
+            CalculoNuevoNivel(ref memoria, sumatorioDeLaprobabilidadDeLaRama, ref probabilidadesAcumuladaDelNodoPara,  arbol, ref numeroSolitariosEncontradosIda, ref numeroSolitariosEncontradosVuelta, ref numHojasPorNivel);
 
             //Traverse taken the probability
             //Check in the same level if the number it was already calculated
@@ -42,7 +40,7 @@ namespace Project_Euler
             // Para el contador e imprime el resultado:
             DateTime tiempo2 = DateTime.Now;
             TimeSpan total = new TimeSpan(tiempo2.Ticks - tiempo1.Ticks);
-            Console.WriteLine("TIEMPO: " + total.TotalSeconds.ToString());
+            Console.WriteLine("TIEMPO: " + total.TotalSeconds);
             Console.WriteLine("PROBABILIDAD TOTAL: " + probabilidadTotal);
             Console.WriteLine("TOTAL NUMERO DE RAMAS: " + numeroTotalDeRamas);
             Console.WriteLine("MEDIA: " + probabilidadTotal / numeroTotalDeRamas);
@@ -50,7 +48,7 @@ namespace Project_Euler
             Console.ReadKey();
         }
 
-        private static void CalculoNuevoNivel(ref MemoriaParaP151 memoria, double sumatorioDeLaprobabilidadDeLaRama,  ref List<double> probabilidadesAcumuladaDelNodoPara, ref double sumatorioDeProbabilidadDelNodoActual, NTree<List<int>> arbol, ref int numeroSolitariosEncontradosIda, ref int numHojasPorNivel)
+        private static void CalculoNuevoNivel(ref MemoriaParaP151 memoria, double sumatorioDeLaprobabilidadDeLaRama, ref List<double> probabilidadesAcumuladaDelNodoPara, NTree<List<int>> arbol, ref int numeroSolitariosEncontradosIda, ref int numeroSolitariosEncontradosVuelta, ref int numHojasPorNivel)
         {
             //Visualizador(memoria, arbol, numeroTotalDeRamas);
             // Cálculo de probabilidades por nivel y sumatorio de la rama
@@ -68,7 +66,7 @@ namespace Project_Euler
 
                     if (NoHemosCalculadoElNuevoNodoPreviamente(memoria, arbol, i, nuevoArbol))
                     {
-                        CalculoNuevoNivel(ref memoria, sumatorioDeLaprobabilidadDeLaRama, ref probabilidadesAcumuladaDelNodoPara, ref sumatorioDeProbabilidadDelNodoActual, nuevoArbol, ref numeroSolitariosEncontradosIda, ref numHojasPorNivel);
+                        CalculoNuevoNivel(ref memoria, sumatorioDeLaprobabilidadDeLaRama, ref probabilidadesAcumuladaDelNodoPara, nuevoArbol, ref numeroSolitariosEncontradosIda,ref numeroSolitariosEncontradosVuelta, ref numHojasPorNivel);
                         //Sumamos un solitario encontrado
 
                         if ((nuevoArbol.GetNode().Count == 1) && (nuevoArbol.GetNode()[0] != 5))
@@ -79,7 +77,7 @@ namespace Project_Euler
                         probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontradosVuelta] = probabilidadesAcumuladaDelNodoPara[numeroSolitariosEncontradosVuelta] * (1 / numeroElementosDelNuevoNodo);
 
                         memoria.listaMemoriaProbabilidades.Add(ConvertirListaEnCadena(nuevoArbol.GetNode()), probabilidadesAcumuladaDelNodoPara);
-                        memoria.ramasTotales = sumatorioDeNumeroDeRamasVuelta;
+                        memoria.ramasTotales = numHojasPorNivel;
                     }
                     else
                     {
@@ -92,9 +90,7 @@ namespace Project_Euler
                                 probabilidadesTotalPara[z] += probabilidadGuardadaDeNodoRepetido[z];
 
                             }
-
-                            numeroTotalDeRamas += memoria.ramasTotales;
-                            sumatorioDeNumeroDeRamasVuelta++;
+                            numHojasPorNivel += memoria.ramasTotales;
                         }
                     }
                 }
@@ -125,10 +121,7 @@ namespace Project_Euler
                     probabilidadesTotalPara[numeroSolitariosEncontradosIda] += sumatorioDeLaprobabilidadDeLaRama;
                     return true;
                 }
-                else
-                {
                     numeroSolitariosEncontradosIda++;
-                }
             }
             return false;
         }
