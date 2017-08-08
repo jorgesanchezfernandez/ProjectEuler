@@ -50,6 +50,8 @@ namespace Project_Euler
 
         private static void CalculoNuevoNivel(ref MemoriaParaP151 memoria, double sumatorioDeLaprobabilidadDeLaRama, ref List<double> probabilidadesAcumuladaDelNodoPara, NTree<List<int>> arbol, ref int numeroSolitariosEncontradosIda, ref int numeroSolitariosEncontradosVuelta, ref int numHojasPorNivel)
         {
+            Visualizador(memoria, arbol, numeroTotalDeRamas);
+            numHojasPorNivel = 0;
             //Visualizador(memoria, arbol, numeroTotalDeRamas);
             // Cálculo de probabilidades por nivel y sumatorio de la rama
             var numeroElementosDelNodo = Convert.ToDouble(arbol.GetNode().Count);
@@ -57,8 +59,7 @@ namespace Project_Euler
             sumatorioDeLaprobabilidadDeLaRama = sumatorioDeLaprobabilidadDeLaRama * probabilidadDelNivel;
 
             if (!EsHojaTrueYTrataNumeroSolitario(sumatorioDeLaprobabilidadDeLaRama, arbol, numeroSolitariosEncontradosIda, ref numHojasPorNivel))
-            { 
-                numHojasPorNivel = 0;
+            {                
                 // Recorremos cada elemento del nodo
                 for (var i = arbol.GetNode().Count - 1; i >= 0; i--)
                 {
@@ -108,16 +109,16 @@ namespace Project_Euler
 
         private static bool NoHemosCalculadoElNuevoNodoPreviamente(MemoriaParaP151 memoria, NTree<List<int>> arbol, int i, NTree<List<int>> nuevoArbol)
         {
-            return !memoria.listaMemoriaProbabilidades.ContainsKey(ConvertirListaEnCadena(nuevoArbol.GetNode())) && ((i < arbol.GetNode().Count - 1) && (arbol.GetNode()[i] != arbol.GetNode()[i + 1]));
+            return !memoria.listaMemoriaProbabilidades.ContainsKey(ConvertirListaEnCadena(nuevoArbol.GetNode())) && ( i == arbol.GetNode().Count - 1 || (i < arbol.GetNode().Count - 1) && (arbol.GetNode()[i] != arbol.GetNode()[i + 1]));
         }
 
-        private static bool EsHojaTrueYTrataNumeroSolitario(double sumatorioDeLaprobabilidadDeLaRama, NTree<List<int>> arbol, int numeroSolitariosEncontradosIda, ref int numeroTotalDeHojasPorNodo)
+        private static bool EsHojaTrueYTrataNumeroSolitario(double sumatorioDeLaprobabilidadDeLaRama, NTree<List<int>> arbol, int numeroSolitariosEncontradosIda, ref int numeroTotalDeHojasNivel)
         {
             if (arbol.GetNode().Count == 1)
             {
                 if (arbol.GetNode()[0] == 5)
                 {
-                    numeroTotalDeHojasPorNodo++;
+                    numeroTotalDeHojasNivel++;
                     probabilidadesTotalPara[numeroSolitariosEncontradosIda] += sumatorioDeLaprobabilidadDeLaRama;
                     return true;
                 }
@@ -128,13 +129,16 @@ namespace Project_Euler
 
         private static void Visualizador(MemoriaParaP151 memoria, NTree<List<int>> arbol, int numeroTotalDeRamas)
         {
+            if (memoria.listaMemoriaProbabilidades.Count < 7)
+            {
                 Console.WriteLine("Nodo: ");
-                foreach(var nodo in arbol.GetNode())
+                foreach (var nodo in arbol.GetNode())
                 {
                     Console.WriteLine(nodo);
                 }
                 Console.WriteLine("Numero de ramas totales: " + numeroTotalDeRamas);
-                //Console.WriteLine("Sumatorio de ramas de vuelta: " + sumatorioDeNumeroDeRamasVuelta);
+                Console.WriteLine("Sumatorio de ramas de vuelta: " + memoria.ramasTotales);
+            }
         }
 
         private static List<int> CrearNuevoNodo(NTree<List<int>> arbol, int i)
