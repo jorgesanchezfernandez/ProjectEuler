@@ -15,26 +15,20 @@ namespace Project_Euler
         {
             // Inicia el contador:
             DateTime tiempo1 = DateTime.Now;
-
-            var numHojasPorNivel = 0;
-
-            var sumatorioDeLaprobabilidadDeLaRama = 1.0;
-
-            var probabilidadesAcumuladaDelNodoPara = new List<double> { 1, 1, 1, 1 };
             
             var arbol = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
-            var numeroSolitariosEncontradosIda = 0;
-            var numeroSolitariosEncontradosVuelta = 0;
-
             var memoria = new MemoriaParaP151();
 
-            //Build the tree
-            CalculoNuevoNivel(ref memoria, sumatorioDeLaprobabilidadDeLaRama, ref probabilidadesAcumuladaDelNodoPara,  arbol, ref numeroSolitariosEncontradosIda, ref numeroSolitariosEncontradosVuelta, ref numHojasPorNivel);
+            if (!arbol.IsLeaf)
+            {
+                //Sumar el numero de solitarios encontrados
+            }
+            else
+            {
+                //Sumar uno y salir (i=-1)
 
-            //Traverse taken the probability
-            //Check in the same level if the number it was already calculated
-            //Save this whole number of this level in a list.
-            var probabilidadTotal = probabilidadesTotalPara[0] + probabilidadesTotalPara[1] + probabilidadesTotalPara[2] + probabilidadesTotalPara[3];
+            }
+            
 
             // Para el contador e imprime el resultado:
             DateTime tiempo2 = DateTime.Now;
