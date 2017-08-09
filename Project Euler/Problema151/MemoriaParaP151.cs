@@ -11,20 +11,20 @@ namespace Project_Euler.Problema151
         public Dictionary<string, List<double>> listaMemoriaProbabilidades { get; set; }
         public Dictionary<string, int> hojasTotales { get; set; }
 
-        public Dictionary<string, int>numeroDeSoliarios { get; set; }
+        public Dictionary<string, List<int>> numeroDeSolitarios { get; set; }
 
         public MemoriaParaP151()
         {
-            this.listaMemoriaProbabilidades = new Dictionary<string, List<double>>();
-            this.hojasTotales = new Dictionary<string, int>();
-            this.numeroDeSoliarios = new Dictionary<string, int>();
+            listaMemoriaProbabilidades = new Dictionary<string, List<double>>();
+            hojasTotales = new Dictionary<string, int>();
+            numeroDeSolitarios = new Dictionary<string, List<int>>();
         }
 
-        public MemoriaParaP151(Dictionary<string, List<double>> listaMemoriaProbabilidades, Dictionary<string, int> ramasTotales, Dictionary<string, int> numeroDeSolitarios)
+        public MemoriaParaP151(Dictionary<string, List<double>> listaMemoriaProbabilidades, Dictionary<string, int> hojasTotales, Dictionary<string, List<int>> numeroDeSolitarios)
         {
             this.listaMemoriaProbabilidades = listaMemoriaProbabilidades;
-            this.hojasTotales = ramasTotales;
-            this.numeroDeSoliarios = numeroDeSoliarios;
+            this.hojasTotales = hojasTotales;
+            this.numeroDeSolitarios = numeroDeSolitarios;
         }
     }
 }
