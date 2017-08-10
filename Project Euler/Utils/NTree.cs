@@ -9,13 +9,16 @@ namespace Project_Euler.Utils
         private List<int> data;
         private LinkedList<NTree<List<int>>> children;
 
-        public int TotalLonelyNumbersInNode { get; set; }
+        public double TotalLonelyNumbersInNodeToLeaf { get; set; }
+
         public bool IsLastBeforeLeaf { get; set; }
 
         public NTree(List<int> data)
         {
             this.data = data;
             children = new LinkedList<NTree<List<int>>>();
+
+            TotalLonelyNumbersInNodeToLeaf = 0.0;
 
             IsLastBeforeLeaf = data.Count == 1 && data[0] == 4 || data.Count == 2 && data[0] == 5 && data[1] == 5;
 
@@ -26,6 +29,7 @@ namespace Project_Euler.Utils
                     AddChild(CrearNuevoNodo(data, j));
                 }
             }
+
         }
 
         public void AddChild(List<int> data)
@@ -71,7 +75,7 @@ namespace Project_Euler.Utils
             }
             if (nuevoNodo.Count == 0)
             {
-                TotalLonelyNumbersInNode++;
+                TotalLonelyNumbersInNodeToLeaf++;
             }
 
             if (data[i] == 2)

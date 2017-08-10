@@ -14,6 +14,10 @@ namespace Project_Euler
         public static double numeroTotalDeTerminacionesMenosHoja = 0.0;
 
         public static double numeroTotalDeSolitarios = 0.0;
+
+        public static List<MemoriaParaP151> memoria = new List<MemoriaParaP151>();
+
+        public static double CeilingDividor = 2.0;
  
         static void Main(string[] args)
         {
@@ -34,24 +38,60 @@ namespace Project_Euler
             Console.ReadKey();
         }
 
-        private static void CalcularNuevaRama(NTree<List<int>> arbol)
+        private static int CalcularNuevaRama(NTree<List<int>> arbol)
         {
-            if (!arbol.IsLeaf)
+            int indice = BuscarNodoEnLista(arbol);
+
+            if (indice != -1)
             {
-                numeroTotalDeSolitarios += arbol.TotalLonelyNumbersInNode;
-                //Sumar el numero de solitarios encontrados
-                for (var i = arbol.GetChildren().Count - 1; i >= 0; i--)
+                if (!arbol.IsLeaf)
                 {
-                    var nuevoArbol = new NTree<List<int>>(arbol.GetChild(i).GetNode());
-                    CalcularNuevaRama(nuevoArbol);
-                    if (nuevoArbol.IsLeaf) i = -1;
+                    //Sumar el numero de solitarios encontrados
+                    for (var i = arbol.GetChildren().Count - 1; i >= 0; i--)
+                    {
+                        var nuevoArbol = new NTree<List<int>>(arbol.GetChild(i).GetNode());
+                        if (CalcularNuevaRama(nuevoArbol) == -1)
+                        {
+                            //Sumar el numero de solitarios encontrados desde la hoja al numero de solitarios del nodo
+                            //Añadir a la lista
+                        }
+                    }
+                }
+                else
+                {
+                    //Sumar uno 
+                    numeroTotalDeTerminacionesMenosHoja++;
                 }
             }
             else
             {
-                //Sumar uno 
-                numeroTotalDeTerminacionesMenosHoja++;
+                numeroTotalDeSolitarios += memoria[indice].numeroDeSolitariosHastaHoja;
+                numeroTotalDeTerminacionesMenosHoja += memoria[indice].numeroTotalDeHojas;
             }
+
+            return indice;
+        }
+
+        private static int BuscarNodoEnLista(NTree<List<int>> arbol)
+        {
+            var indice = 0;
+            var encontrado = false;
+
+            for (var i = memoria.Count - 1; i >= Math.Ceiling(memoria.Count / CeilingDividor) && !encontrado; i--)
+            {
+                if (memoria[i].nodo.Count == arbol.GetNode().Count)
+                {
+                    var iguales = true;
+                    for (var j = 0; j <= memoria[i].nodo.Count - 1 && iguales; j++)
+                    {
+                        iguales = memoria[i].nodo[j] == arbol.GetNode()[j];
+                    }
+                    encontrado = iguales;
+                    indice = encontrado == true ? i : -1;
+                }
+            }
+
+            return indice;
         }
 
         //private static void CalculoNuevoNivel(ref MemoriaParaP151 memoria, double sumatorioDeLaprobabilidadDeLaRama, ref List<double> probabilidadesAcumuladaDelNodoPara, NTree<List<int>> arbol, ref int numeroSolitariosEncontradosIda, ref int numeroSolitariosEncontradosVuelta, ref int numHojasPorNivel)

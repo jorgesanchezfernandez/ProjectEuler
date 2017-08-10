@@ -8,20 +8,33 @@ namespace Project_Euler.Problema151
 {
     class MemoriaParaP151
     {
-        private List<double> probabilidadesDelNodo;
+        public List<int> nodo;
 
-        private int hojasDelNodo;
+        public double numeroDeSolitariosHastaHoja;
+
+        public double numeroTotalDeHojas;
 
         public MemoriaParaP151()
         {
-            this.probabilidadesDelNodo = new List<double>();
-            this.hojasDelNodo = 0;
+            this.nodo = new List<int>();
+            this.numeroDeSolitariosHastaHoja = 0.0;
+            this.numeroTotalDeHojas = 0.0;
         }
 
-        public MemoriaParaP151(List<double> probabilidadesDelNodo, int hojasDelNodo)
+        public MemoriaParaP151(List<int> nodo, double numeroDeSolitariosHastaHoja, double numeroDeHojas)
         {
-            this.probabilidadesDelNodo = probabilidadesDelNodo;
-            this.hojasDelNodo = hojasDelNodo;
+            this.nodo = nodo;
+            this.numeroDeSolitariosHastaHoja = numeroDeSolitariosHastaHoja;
+            this.numeroTotalDeHojas = numeroDeHojas;
+        }
+
+        public void AddSolitariosANodo(double numeroDeSolitariosHastaHoja)
+        {
+            this.numeroDeSolitariosHastaHoja += numeroDeSolitariosHastaHoja;
+        }
+        public void AddNumeroDeHojas(double numeroTotalDeHojas)
+        {
+            this.numeroTotalDeHojas += numeroTotalDeHojas;
         }
     }
 }
