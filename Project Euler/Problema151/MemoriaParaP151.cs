@@ -8,9 +8,9 @@ namespace Project_Euler.Problema151
 {
     class MemoriaParaP151
     {
-        List<double> probabilidadesDelNodo;
+        private List<double> probabilidadesDelNodo;
 
-        int hojasDelNodo;
+        private int hojasDelNodo;
 
         public MemoriaParaP151()
         {
