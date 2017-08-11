@@ -42,18 +42,25 @@ namespace Project_Euler
         {
             int indice = BuscarNodoEnLista(arbol);
 
-            if (indice != -1)
+            if (indice == -1)
             {
                 if (!arbol.IsLeaf)
                 {
                     //Sumar el numero de solitarios encontrados
-                    for (var i = arbol.GetChildren().Count - 1; i >= 0; i--)
+                    for (var i = arbol.GetNode().Count - 1; i >= 0; i--)
                     {
-                        var nuevoArbol = new NTree<List<int>>(arbol.GetChild(i).GetNode());
+
+                        var nuevoArbol = new NTree<List<int>>(CrearNuevoNodo(arbol, i));
                         if (CalcularNuevaRama(nuevoArbol) == -1)
                         {
+                            if (nuevoArbol.EsSolitario)
+                            {
+                                nuevoArbol.TotalLonelyNumbersInNodeToLeaf++;
+                            }
                             //Sumar el numero de solitarios encontrados desde la hoja al numero de solitarios del nodo
+                            arbol.TotalLonelyNumbersInNodeToLeaf += nuevoArbol.TotalLonelyNumbersInNodeToLeaf;
                             //Añadir a la lista
+                            memoria.Add(new MemoriaParaP151(nuevoArbol.GetNode(), nuevoArbol.TotalLonelyNumbersInNodeToLeaf, numeroTotalDeTerminacionesMenosHoja));
                         }
                     }
                 }
@@ -74,10 +81,10 @@ namespace Project_Euler
 
         private static int BuscarNodoEnLista(NTree<List<int>> arbol)
         {
-            var indice = 0;
+            var indice = -1;
             var encontrado = false;
 
-            for (var i = memoria.Count - 1; i >= Math.Ceiling(memoria.Count / CeilingDividor) && !encontrado; i--)
+            for (var i = memoria.Count - 1; i > -1 && memoria[i].nodo.Count >= arbol.GetNode().Count && i >= Math.Ceiling(memoria.Count / CeilingDividor) && !encontrado; i--)
             {
                 if (memoria[i].nodo.Count == arbol.GetNode().Count)
                 {
@@ -90,7 +97,7 @@ namespace Project_Euler
                     indice = encontrado == true ? i : -1;
                 }
             }
-
+            
             return indice;
         }
 
@@ -272,34 +279,35 @@ namespace Project_Euler
         //    }
         //}
 
-        //private static List<int> CrearNuevoNodo(NTree<List<int>> arbol, int i)
-        //{
-        //    var nuevoNodo = new List<int>();
-        //    for (var j = 0; j < arbol.GetNode().Count; j++)
-        //    {
-        //        if (j != i)
-        //        {
-        //            nuevoNodo.Add(arbol.GetNode()[j]);
-        //        }
-        //    }
-        //    if (arbol.GetNode()[i] == 2)
-        //    {
-        //        nuevoNodo.Add(3);
-        //        nuevoNodo.Add(4);
-        //        nuevoNodo.Add(5);
-        //    }
-        //    if (arbol.GetNode()[i] == 3)
-        //    {
-        //        nuevoNodo.Add(4);
-        //        nuevoNodo.Add(5);
-        //    }
-        //    if (arbol.GetNode()[i] == 4)
-        //    {
-        //        nuevoNodo.Add(5);
-        //    }
-        //    nuevoNodo.Sort(); // Importante para no repetir las busquedas
-        //    return nuevoNodo;
-        //}
+        private static List<int> CrearNuevoNodo(NTree<List<int>> arbol, int i)
+        {
+            var nuevoNodo = new List<int>();
+            for (var j = 0; j < arbol.GetNode().Count; j++)
+            {
+                if (j != i)
+                {
+                    nuevoNodo.Add(arbol.GetNode()[j]);
+                }
+            }
+
+            if (arbol.GetNode()[i] == 2)
+            {
+                nuevoNodo.Add(3);
+                nuevoNodo.Add(4);
+                nuevoNodo.Add(5);
+            }
+            if (arbol.GetNode()[i] == 3)
+            {
+                nuevoNodo.Add(4);
+                nuevoNodo.Add(5);
+            }
+            if (arbol.GetNode()[i] == 4)
+            {
+                nuevoNodo.Add(5);
+            }
+            nuevoNodo.Sort(); // Importante para no repetir las busquedas
+            return nuevoNodo;
+        }
 
         //public static string ConvertirListaEnCadena(List<int> nodo)
         //{
