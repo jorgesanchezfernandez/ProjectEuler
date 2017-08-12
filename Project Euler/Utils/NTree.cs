@@ -9,21 +9,21 @@ namespace Project_Euler.Utils
         private List<int> data;
         private LinkedList<NTree<List<int>>> children;
 
-        public int[] guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja = new int[] { 0, 0, 0, 0 };
+        public int[] NumTotalOfBranchesPerTimes = new int[] { 0, 0, 0, 0 };
 
-        public bool IsLastBeforeLeaf { get; set; }
+        private bool IsLastBeforeLeaf;
 
-        public bool solitario;
+        public bool SolitaryNumber;
 
-        public ulong numeroDeHojasDelNodo;
+        public ulong NumTotalNodeLeafs;
 
         public NTree(List<int> data)
         {
             this.data = data;
             children = new LinkedList<NTree<List<int>>>();
 
-            solitario = false;
-            numeroDeHojasDelNodo = 0;
+            SolitaryNumber = false;
+            NumTotalNodeLeafs = 0;
 
             IsLastBeforeLeaf = data.Count == 1 && data[0] == 4 || data.Count == 2 && data[0] == 5 && data[1] == 5;
         }
@@ -59,14 +59,14 @@ namespace Project_Euler.Utils
             }
         }
 
-        public bool EsSolitario
+        public bool IsSolitary
         {
             get
             {
                 return data.Count == 1 && data[0] != 5;
             }
         }
-        private List<int> CrearNuevoNodo(List<int> data, int i)
+        public List<int> GenerateNewNode(int i)
         {
             var nuevoNodo = new List<int>();
             for (var j = 0; j < data.Count; j++)
@@ -78,7 +78,7 @@ namespace Project_Euler.Utils
             }
             if (nuevoNodo.Count == 0)
             {
-                solitario = true;
+                SolitaryNumber = true;
             }
 
             if (data[i] == 2)
