@@ -11,9 +11,13 @@ namespace Project_Euler
 
     class Problem151
     {
-        public static double numeroTotalDeTerminacionesMenosHoja = 0.0;
+        public static ulong numeroTotalDeTerminacionesMenosHoja = 0;
 
-        public static double numeroTotalDeSolitarios = 0.0;
+        public static int sumaDeSolitariosPorRama = 0;
+
+        public static int sumaDeSolitariosDesdeNodoHastaHoja = 0;
+
+        public static int[] guardaNumeroDeRamasPorCantidadDeSolitarios = new int[] { 0, 0, 0, 0 };
 
         public static List<MemoriaParaP151> memoria = new List<MemoriaParaP151>();
 
@@ -26,19 +30,29 @@ namespace Project_Euler
             
             var arbol = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
 
-            CalcularNuevaRama(arbol);
+            CalcularNuevaRama(arbol, sumaDeSolitariosPorRama, sumaDeSolitariosDesdeNodoHastaHoja);
 
             // Para el contador e imprime el resultado:
             DateTime tiempo2 = DateTime.Now;
             TimeSpan total = new TimeSpan(tiempo2.Ticks - tiempo1.Ticks);
             Console.WriteLine("TIEMPO: " + total.TotalSeconds);
+
+            var media = 0.0;
+            for (var j = 0; j <= arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja.Length - 1; j++)
+            {
+                Console.WriteLine("TOTAL NUMERO DE "+ j +" SOLITARIOS: " + arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[j]);
+                var numTotal = arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[j];
+                media += double.Parse(numTotal.ToString()) / double.Parse(numeroTotalDeTerminacionesMenosHoja.ToString());
+            }
+            
             Console.WriteLine("TOTAL NUMERO DE RAMAS: " + numeroTotalDeTerminacionesMenosHoja);
-            Console.WriteLine("MEDIA: " + numeroTotalDeSolitarios / numeroTotalDeTerminacionesMenosHoja);
+
+            Console.WriteLine("MEDIA: " + media);
 
             Console.ReadKey();
         }
 
-        private static int CalcularNuevaRama(NTree<List<int>> arbol)
+        private static int CalcularNuevaRama(NTree<List<int>> arbol, int sumaDeSolitariosPorRama, int sumaDeSolitariosDesdeNodoHastaHoja)
         {
             int indice = BuscarNodoEnLista(arbol);
 
@@ -46,34 +60,71 @@ namespace Project_Euler
             {
                 if (!arbol.IsLeaf)
                 {
+                    if (arbol.EsSolitario)
+                    {
+                        sumaDeSolitariosPorRama++;
+                    }
                     //Sumar el numero de solitarios encontrados
+                    ulong numeroDeHojasDelNodo = 0;
                     for (var i = arbol.GetNode().Count - 1; i >= 0; i--)
                     {
-
                         var nuevoArbol = new NTree<List<int>>(CrearNuevoNodo(arbol, i));
-                        if (CalcularNuevaRama(nuevoArbol) == -1)
+                        if (CalcularNuevaRama(nuevoArbol, sumaDeSolitariosPorRama, sumaDeSolitariosDesdeNodoHastaHoja) == -1)
                         {
-                            if (nuevoArbol.EsSolitario)
+                            if (arbol.EsSolitario)
                             {
-                                nuevoArbol.TotalLonelyNumbersInNodeToLeaf++;
+                                arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[0] = 0;
+                                for (var z = 1; z <= arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja.Length - 1; z++)
+                                {
+                                    if (nuevoArbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[z] > 0)
+                                    {
+                                        arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[z+1] = 1;
+                                    }
+                                    
+                                }
                             }
-                            //Sumar el numero de solitarios encontrados desde la hoja al numero de solitarios del nodo
-                            arbol.TotalLonelyNumbersInNodeToLeaf += nuevoArbol.TotalLonelyNumbersInNodeToLeaf;
-                            //Añadir a la lista
-                            memoria.Add(new MemoriaParaP151(nuevoArbol.GetNode(), nuevoArbol.TotalLonelyNumbersInNodeToLeaf, numeroTotalDeTerminacionesMenosHoja));
+                            else
+                            {
+                                for (var z = 0; z <= arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja.Length - 1; z++)
+                                {
+                                    arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[z] += nuevoArbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[z];
+                                }
+                            }                          
                         }
+                        numeroDeHojasDelNodo += nuevoArbol.numeroDeHojasDelNodo;
                     }
+                    //Añadir a la lista
+                    memoria.Add(new MemoriaParaP151(arbol.GetNode(), arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja, numeroDeHojasDelNodo));
                 }
                 else
                 {
+                    guardaNumeroDeRamasPorCantidadDeSolitarios[sumaDeSolitariosPorRama]++;
+
+                    if (arbol.EsSolitario)
+                    {
+                        arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[1]++;
+                    }else
+                    {
+                        arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja[0]++;
+                    }
+                    arbol.numeroDeHojasDelNodo ++;
+
+                    memoria.Add(new MemoriaParaP151(arbol.GetNode(), arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja, arbol.numeroDeHojasDelNodo));
                     //Sumar uno 
                     numeroTotalDeTerminacionesMenosHoja++;
                 }
             }
             else
             {
-                numeroTotalDeSolitarios += memoria[indice].numeroDeSolitariosHastaHoja;
-                numeroTotalDeTerminacionesMenosHoja += memoria[indice].numeroTotalDeHojas;
+                numeroTotalDeTerminacionesMenosHoja += memoria[indice].numeroDeHojasDelNodo;
+
+                for (var z = 0; z <= arbol.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja.Length - 1; z++)
+                {
+                    if (memoria[indice].guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo[z] > 0)
+                    {
+                        guardaNumeroDeRamasPorCantidadDeSolitarios[sumaDeSolitariosPorRama + z]+= memoria[indice].guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo[z];
+                    }
+                }
             }
 
             return indice;

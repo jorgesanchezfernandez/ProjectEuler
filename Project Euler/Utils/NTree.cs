@@ -9,11 +9,13 @@ namespace Project_Euler.Utils
         private List<int> data;
         private LinkedList<NTree<List<int>>> children;
 
-        public double TotalLonelyNumbersInNodeToLeaf { get; set; }
+        public int[] guardaNumeroDeRamasPorCantidadDeSolitariosEnNodoHastaHoja = new int[] { 0, 0, 0, 0 };
 
         public bool IsLastBeforeLeaf { get; set; }
 
         public bool solitario;
+
+        public ulong numeroDeHojasDelNodo;
 
         public NTree(List<int> data)
         {
@@ -21,8 +23,7 @@ namespace Project_Euler.Utils
             children = new LinkedList<NTree<List<int>>>();
 
             solitario = false;
-
-            TotalLonelyNumbersInNodeToLeaf = 0.0;
+            numeroDeHojasDelNodo = 0;
 
             IsLastBeforeLeaf = data.Count == 1 && data[0] == 4 || data.Count == 2 && data[0] == 5 && data[1] == 5;
         }

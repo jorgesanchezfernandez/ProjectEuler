@@ -10,31 +10,28 @@ namespace Project_Euler.Problema151
     {
         public List<int> nodo;
 
-        public double numeroDeSolitariosHastaHoja;
+        public int[] guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo = new int[] { 0, 0, 0, 0 };
 
-        public double numeroTotalDeHojas;
+        public ulong numeroDeHojasDelNodo = 0;
 
         public MemoriaParaP151()
         {
             this.nodo = new List<int>();
-            this.numeroDeSolitariosHastaHoja = 0.0;
-            this.numeroTotalDeHojas = 0.0;
         }
 
-        public MemoriaParaP151(List<int> nodo, double numeroDeSolitariosHastaHoja, double numeroDeHojas)
+        public MemoriaParaP151(List<int> nodo, int[] guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo, ulong numeroDeHojasDelNodo)
         {
             this.nodo = nodo;
-            this.numeroDeSolitariosHastaHoja = numeroDeSolitariosHastaHoja;
-            this.numeroTotalDeHojas = numeroDeHojas;
+            this.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo = guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo;
+            this.numeroDeHojasDelNodo = numeroDeHojasDelNodo;
         }
 
-        public void AddSolitariosANodo(double numeroDeSolitariosHastaHoja)
+        public void AddSolitariosANodo(int[] guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo)
         {
-            this.numeroDeSolitariosHastaHoja += numeroDeSolitariosHastaHoja;
-        }
-        public void AddNumeroDeHojas(double numeroTotalDeHojas)
-        {
-            this.numeroTotalDeHojas += numeroTotalDeHojas;
+            for(var i=0; i <= guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo.Length - 1; i++ )
+            {
+                this.guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo[i] += guardaNumeroDeRamasPorCantidadDeSolitariosEnNodo[i];
+            }
         }
     }
 }
