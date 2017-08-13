@@ -10,20 +10,20 @@ namespace Project_Euler.Problema151
     {
         public List<int> nodo;
 
-        public int[] guardaNumTotalDeRamasPorSolitarios = new int[] { 0, 0, 0, 0 };
+        public int numSinglesSheetsToLeaf = 0;
 
-        public ulong numeroDeHojasDelNodo = 0;
+        public int numCutsInNodeToLeaf = 0;
 
         public MemoriaParaP151()
         {
             this.nodo = new List<int>();
         }
 
-        public MemoriaParaP151(List<int> nodo, int[] guardaNumTotalDeRamasPorSolitarios, ulong numeroDeHojasDelNodo)
+        public MemoriaParaP151(List<int> nodo, int numSinglesSheetsToLeaf, int numCutsInNodeToLeaf)
         {
             this.nodo = nodo;
-            this.guardaNumTotalDeRamasPorSolitarios = guardaNumTotalDeRamasPorSolitarios;
-            this.numeroDeHojasDelNodo = numeroDeHojasDelNodo;
+            this.numSinglesSheetsToLeaf = numSinglesSheetsToLeaf;
+            this.numCutsInNodeToLeaf = numCutsInNodeToLeaf;
         }
     }
 }

@@ -7,40 +7,22 @@ namespace Project_Euler.Utils
     public class NTree<T>
     {
         private List<int> data;
-        private LinkedList<NTree<List<int>>> children;
 
-        public int[] NumTotalOfBranchesPerTimes = new int[] { 0, 0, 0, 0 };
+        private bool Leaf;
 
-        private bool IsLastBeforeLeaf;
+        public int numSinglesSheetsToLeaf;
 
-        public ulong NumTotalNodeLeafs;
+        public int numCutsInNodeToLeaf;
 
         public NTree(List<int> data)
         {
             this.data = data;
-            children = new LinkedList<NTree<List<int>>>();
 
-            NumTotalNodeLeafs = 0;
+            numSinglesSheetsToLeaf = 0;
 
-            IsLastBeforeLeaf = data.Count == 1 && data[0] == 4 || data.Count == 2 && data[0] == 5 && data[1] == 5;
-        }
+            numCutsInNodeToLeaf = 0;
 
-        public void AddChild(List<int> data)
-        {
-            children.AddFirst(new NTree<List<int>>(data));
-        }
-
-        public NTree<List<int>> GetChild(int i)
-        {
-            foreach (NTree<List<int>> n in children)
-                if (--i == 0)
-                    return n;
-            return null;
-        }
-
-        public LinkedList<NTree<List<int>>> GetChildren()
-        {
-            return children;
+            Leaf = data.Count == 1 && data[0] == 5;
         }
 
         public List<int> GetNode()
@@ -52,7 +34,7 @@ namespace Project_Euler.Utils
         {
             get
             {
-                return IsLastBeforeLeaf;
+                return Leaf;
             }
         }
 

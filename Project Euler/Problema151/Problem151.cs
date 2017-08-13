@@ -26,41 +26,30 @@ namespace Project_Euler
             // Inicia el contador:
             DateTime tiempo1 = DateTime.Now;
 
-            var NumTimes = 0;
+            var NumTotalSingleSheets = 0;
+            var NumTotalCuts = 1;
 
-            CalculateNextNode(NumTimes, ref Tree);
+            var numSinglesSheetsToLeaf = 0;
+            var numCutsInNodeToLeaf = 0;
 
-            var totalLeafs = 0;
-            for (var i = 0; i <= NumTotalOfBranchesPerTimes.Length - 1; i++)
-            {
-                totalLeafs += NumTotalOfBranchesPerTimes[i];
-            }
+            CalculateNextNode(ref NumTotalSingleSheets, ref NumTotalCuts, ref Tree, ref numSinglesSheetsToLeaf,ref numCutsInNodeToLeaf);
 
-            decimal probabilityPerOneTime = Decimal.Parse(NumTotalOfBranchesPerTimes[1].ToString()) / totalLeafs;
-            decimal probabilityPerOneTwo = Decimal.Parse(NumTotalOfBranchesPerTimes[2].ToString()) / totalLeafs;
-            decimal probabilityPerOneThree = Decimal.Parse(NumTotalOfBranchesPerTimes[3].ToString()) / totalLeafs;
-
-            //decimal probabilityPerOneTime = Decimal.Parse(NumTotalOfBranchesPerTimes[1].ToString()) / NumTotalTreeLeafs;
-            //decimal probabilityPerOneTwo = Decimal.Parse(NumTotalOfBranchesPerTimes[2].ToString()) / NumTotalTreeLeafs;
-            //decimal probabilityPerOneThree = Decimal.Parse(NumTotalOfBranchesPerTimes[3].ToString()) / NumTotalTreeLeafs;
-
-            var solution = probabilityPerOneTime + 2 * probabilityPerOneTwo + 3 * probabilityPerOneThree;
+            var solution = Double.Parse(NumTotalSingleSheets.ToString()) / Double.Parse(NumTotalCuts.ToString());
 
             // Para el contador e imprime el resultado:
             DateTime tiempo2 = DateTime.Now;
             TimeSpan total = new TimeSpan(tiempo2.Ticks - tiempo1.Ticks);
             Console.WriteLine("TIEMPO: " + total.TotalSeconds);
 
-            Console.WriteLine("TOTAL NUMBER OF BRANCHES: " + totalLeafs);
-
-            //Console.WriteLine("TOTAL NUMBER OF BRANCHES: " + NumTotalTreeLeafs);
+            Console.WriteLine("TOTAL NUMBER OF CUTS: " + NumTotalCuts);
 
             Console.WriteLine("EXPECTED NUMBER: " + solution);
 
+            //0.464399 solution
             Console.ReadKey();
         }
 
-        public static bool CalculateNextNode (int NumTimes, ref NTree<List<int>> Tree)
+        public static bool CalculateNextNode (ref int NumSingleSheets, ref int NumTotalCuts,  ref NTree<List<int>> Tree, ref int numSinglesSheetsToLeaf,ref int numCutsInNodeToLeaf)
         {
             var savedNode = memory.Find(Tree.GetNode());
             var found = savedNode != null;
@@ -68,69 +57,47 @@ namespace Project_Euler
             if (!found)
             {
                 if (Tree.IsSolitary)
-                    NumTimes++;
+                    NumSingleSheets++;
 
-                if (Tree.IsLeaf)
+                NumTotalCuts++;
+
+                if (!Tree.IsLeaf)
                 {
-                    if (Tree.IsSolitary)
-                    {
-                        Tree.NumTotalOfBranchesPerTimes[1]++;
-                        Tree.NumTotalNodeLeafs++;
-
-                        NumTotalOfBranchesPerTimes[NumTimes]++;
-                        NumTotalTreeLeafs++;
-                    }
-                    else
-                    {
-                        Tree.NumTotalOfBranchesPerTimes[0] += 2;
-                        Tree.NumTotalNodeLeafs += 2;
-
-                        NumTotalOfBranchesPerTimes[NumTimes] += 2;
-                        NumTotalTreeLeafs += 2;
-                    }
-                }
-                else
-                {
+                    numCutsInNodeToLeaf = 0;
+                    numSinglesSheetsToLeaf = 0;
                     for (var i = Tree.GetNode().Count - 1; i >= 0; i--)
                     {
                         var newTree = new NTree<List<int>>(Tree.GenerateNewNode(i));
-                        if (!CalculateNextNode(NumTimes, ref newTree))
-                        {                       
-                            var nextNodeBranchesTimes = newTree.NumTotalOfBranchesPerTimes;
-                            var totalNodeLeafs = newTree.NumTotalNodeLeafs;
-                            if (Tree.IsSolitary && !Tree.IsLeaf)
-                            {
-                                Tree.NumTotalOfBranchesPerTimes[0] = 0;
-                                for (var j = 1; j <= newTree.NumTotalOfBranchesPerTimes.Length - 1; j++)
-                                {
-                                    Tree.NumTotalOfBranchesPerTimes[j] += nextNodeBranchesTimes[j - 1];
-                                }
-                            }                         
-                            else{
-                                for (var j = 0; j <= newTree.NumTotalOfBranchesPerTimes.Length - 1; j++)
-                                {
-                                    Tree.NumTotalOfBranchesPerTimes[j] += nextNodeBranchesTimes[j];
-                                }
-                            }
-                            Tree.NumTotalNodeLeafs += newTree.NumTotalNodeLeafs;
-                            
-                            //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
-                            memory.Add(new MemoriaParaP151(newTree.GetNode(), newTree.NumTotalOfBranchesPerTimes, newTree.NumTotalNodeLeafs));
-                        }
+
+                        CalculateNextNode(ref NumSingleSheets, ref NumTotalCuts, ref newTree, ref numSinglesSheetsToLeaf,ref numCutsInNodeToLeaf);
                     }
+                    //Buscar los valores del nodo inmediato para recuperar los valores de cada nodo
+
+                    if (Tree.IsSolitary)
+                        numSinglesSheetsToLeaf = NumSingleSheets - (NumSingleSheets - 1);
+
+                    numCutsInNodeToLeaf++;
+
+                    //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), numSinglesSheetsToLeaf, numCutsInNodeToLeaf));
                 }
+                else
+                {
+                    numCutsInNodeToLeaf++;
+
+                    //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), 0, numCutsInNodeToLeaf));
+                }
+                          
             }
             else
             {
-                //Rrevisar que este haciendo bien esto
-                var nextNodeBranchesTimes = savedNode.guardaNumTotalDeRamasPorSolitarios;
-                var totalNodeLeafs = savedNode.numeroDeHojasDelNodo;
+                NumSingleSheets += savedNode.numSinglesSheetsToLeaf;
 
-                for (var j = NumTimes; j <= NumTotalOfBranchesPerTimes.Length - 1; j++)
-                {
-                    NumTotalOfBranchesPerTimes[j] += nextNodeBranchesTimes[j - NumTimes];
-                }
-                NumTotalTreeLeafs += totalNodeLeafs;
+                NumTotalCuts += savedNode.numCutsInNodeToLeaf;
+
+                numSinglesSheetsToLeaf += savedNode.numSinglesSheetsToLeaf;
+                numCutsInNodeToLeaf += savedNode.numCutsInNodeToLeaf;
             }
 
             return found;
