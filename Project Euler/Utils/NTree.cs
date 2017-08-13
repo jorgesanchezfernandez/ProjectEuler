@@ -13,8 +13,6 @@ namespace Project_Euler.Utils
 
         private bool IsLastBeforeLeaf;
 
-        public bool SolitaryNumber;
-
         public ulong NumTotalNodeLeafs;
 
         public NTree(List<int> data)
@@ -22,7 +20,6 @@ namespace Project_Euler.Utils
             this.data = data;
             children = new LinkedList<NTree<List<int>>>();
 
-            SolitaryNumber = false;
             NumTotalNodeLeafs = 0;
 
             IsLastBeforeLeaf = data.Count == 1 && data[0] == 4 || data.Count == 2 && data[0] == 5 && data[1] == 5;
@@ -75,10 +72,6 @@ namespace Project_Euler.Utils
                 {
                     nuevoNodo.Add(data[j]);
                 }
-            }
-            if (nuevoNodo.Count == 0)
-            {
-                SolitaryNumber = true;
             }
 
             if (data[i] == 2)

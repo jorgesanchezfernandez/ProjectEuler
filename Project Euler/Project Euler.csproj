@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Problema151\HashMapPlus.cs" />
     <Compile Include="Problema151\MemoriaParaP151.cs" />
     <Compile Include="Problema151\Problem151.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
