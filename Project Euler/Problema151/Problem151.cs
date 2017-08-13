@@ -35,10 +35,14 @@ namespace Project_Euler
             {
                 totalLeafs += NumTotalOfBranchesPerTimes[i];
             }
-            //Number expected
+
             decimal probabilityPerOneTime = Decimal.Parse(NumTotalOfBranchesPerTimes[1].ToString()) / totalLeafs;
             decimal probabilityPerOneTwo = Decimal.Parse(NumTotalOfBranchesPerTimes[2].ToString()) / totalLeafs;
             decimal probabilityPerOneThree = Decimal.Parse(NumTotalOfBranchesPerTimes[3].ToString()) / totalLeafs;
+
+            //decimal probabilityPerOneTime = Decimal.Parse(NumTotalOfBranchesPerTimes[1].ToString()) / NumTotalTreeLeafs;
+            //decimal probabilityPerOneTwo = Decimal.Parse(NumTotalOfBranchesPerTimes[2].ToString()) / NumTotalTreeLeafs;
+            //decimal probabilityPerOneThree = Decimal.Parse(NumTotalOfBranchesPerTimes[3].ToString()) / NumTotalTreeLeafs;
 
             var solution = probabilityPerOneTime + 2 * probabilityPerOneTwo + 3 * probabilityPerOneThree;
 
@@ -46,8 +50,10 @@ namespace Project_Euler
             DateTime tiempo2 = DateTime.Now;
             TimeSpan total = new TimeSpan(tiempo2.Ticks - tiempo1.Ticks);
             Console.WriteLine("TIEMPO: " + total.TotalSeconds);
-            
-            Console.WriteLine("TOTAL NUMBER OF BRANCHES: " + NumTotalTreeLeafs);
+
+            Console.WriteLine("TOTAL NUMBER OF BRANCHES: " + totalLeafs);
+
+            //Console.WriteLine("TOTAL NUMBER OF BRANCHES: " + NumTotalTreeLeafs);
 
             Console.WriteLine("EXPECTED NUMBER: " + solution);
 
@@ -69,16 +75,19 @@ namespace Project_Euler
                     if (Tree.IsSolitary)
                     {
                         Tree.NumTotalOfBranchesPerTimes[1]++;
+                        Tree.NumTotalNodeLeafs++;
+
+                        NumTotalOfBranchesPerTimes[NumTimes]++;
+                        NumTotalTreeLeafs++;
                     }
                     else
                     {
-                        Tree.NumTotalOfBranchesPerTimes[0]++;
+                        Tree.NumTotalOfBranchesPerTimes[0] += 2;
+                        Tree.NumTotalNodeLeafs += 2;
+
+                        NumTotalOfBranchesPerTimes[NumTimes] += 2;
+                        NumTotalTreeLeafs += 2;
                     }
-
-                    Tree.NumTotalNodeLeafs++;
-
-                    NumTotalOfBranchesPerTimes[NumTimes]++;
-                    NumTotalTreeLeafs++;
                 }
                 else
                 {
