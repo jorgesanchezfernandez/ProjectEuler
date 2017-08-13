@@ -8,6 +8,8 @@ namespace Project_Euler.Utils
     {
         private List<int> data;
 
+        private LinkedList<NTree<List<int>>> children;
+
         private bool Leaf;
 
         public int numSinglesSheetsToLeaf;
@@ -18,6 +20,8 @@ namespace Project_Euler.Utils
         {
             this.data = data;
 
+            this.children = new LinkedList<NTree<List<int>>>();
+
             numSinglesSheetsToLeaf = 0;
 
             numCutsInNodeToLeaf = 0;
@@ -25,7 +29,24 @@ namespace Project_Euler.Utils
             Leaf = data.Count == 1 && data[0] == 5;
         }
 
-        public List<int> GetNode()
+        public void AddChild(List<int> data)
+        {
+            children.AddFirst(new NTree<List<int>>(data));
+        }
+
+        public NTree<List<int>> GetChild(int i)
+        {
+             foreach (NTree<List<int>> n in children)
+                if (--i == 0)
+                     return n;
+            return null;
+        }
+        public LinkedList<NTree<List<int>>> GetChildren()
+        {
+             return children;
+        }
+
+public List<int> GetNode()
         {
             return data;
         }
