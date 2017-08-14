@@ -19,6 +19,8 @@ namespace Project_Euler.Utils
             get {
                     return numBranchesPerQuantityOfSinglesSheets[0] + numBranchesPerQuantityOfSinglesSheets[1] + numBranchesPerQuantityOfSinglesSheets[2] + numBranchesPerQuantityOfSinglesSheets[3];
                 }
+            set {
+            }
         }
 
         public NTree(List<int> data)

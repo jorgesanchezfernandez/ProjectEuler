@@ -35,11 +35,11 @@ namespace Project_Euler
 
             CalculateNextNode(ref NumTotalSingleSheets, ref Tree);
 
-            var probabilityPer1SingleSheet = Double.Parse(NumTotalOfBranchesPerTimes[1].ToString()) / Double.Parse(NumTotalTreeLeafs.ToString());
-            var probabilityPer2SingleSheet = Double.Parse(NumTotalOfBranchesPerTimes[2].ToString()) / Double.Parse(NumTotalTreeLeafs.ToString());
-            var probabilityPer3SingleSheet = Double.Parse(NumTotalOfBranchesPerTimes[3].ToString()) / Double.Parse(NumTotalTreeLeafs.ToString());
+            var probabilityPer1SingleSheet = Double.Parse(Tree.numBranchesPerQuantityOfSinglesSheets[1].ToString()) / Double.Parse(Tree.numTotalBranches.ToString());
+            var probabilityPer2SingleSheet = Double.Parse(Tree.numBranchesPerQuantityOfSinglesSheets[2].ToString()) / Double.Parse(Tree.numTotalBranches.ToString());
+            var probabilityPer3SingleSheet = Double.Parse(Tree.numBranchesPerQuantityOfSinglesSheets[3].ToString()) / Double.Parse(Tree.numTotalBranches.ToString());
 
-            var expectedNumberOfTimes = probabilityPer1SingleSheet + 2 * probabilityPer2SingleSheet + 3 * probabilityPer3SingleSheet;
+            var expectedNumberOfTimes =  probabilityPer1SingleSheet + (2 * probabilityPer2SingleSheet) +  (3 * probabilityPer3SingleSheet);
 
             // Para el contador e imprime el resultado:
             DateTime tiempo2 = DateTime.Now;
@@ -75,17 +75,22 @@ namespace Project_Euler
 
                         CalculateNextNode(ref NumSingleSheets, ref newTree);
 
-                        for (var j = 0; j <= NumSingleSheets - 1; j++)
+                       
+                        if (Tree.IsSolitary)
                         {
-                            if (Tree.IsSolitary)
+                            for (var j = 0; j <= NumSingleSheets - 1; j++)
                             {
                                 Tree.numBranchesPerQuantityOfSinglesSheets[j + 1] += newTree.numBranchesPerQuantityOfSinglesSheets[j];
                             }
-                            else
+                        }
+                        else
+                        {
+                            for (var j = 0; j <= NumSingleSheets; j++)
                             {
                                 Tree.numBranchesPerQuantityOfSinglesSheets[j] += newTree.numBranchesPerQuantityOfSinglesSheets[j];
                             }
                         }
+                        
                     }
 
                     //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
@@ -102,12 +107,8 @@ namespace Project_Euler
             }
             else
             {
-                NumSingleSheets += savedNode;
-
-                NumTotalCuts += savedNode.numCutsInNodeToLeaf;
-
-                Tree.numSinglesSheetsToLeaf = savedNode.numSinglesSheetsToLeaf;
-                Tree.numCutsInNodeToLeaf = savedNode.numCutsInNodeToLeaf;
+                Tree.numBranchesPerQuantityOfSinglesSheets = savedNode.numBranchesPerQuantityOfSinglesSheets;
+                Tree.numTotalBranches = savedNode.numTotalBranches;
             }
 
             return found;

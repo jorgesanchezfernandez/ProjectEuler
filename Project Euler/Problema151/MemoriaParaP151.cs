@@ -8,11 +8,11 @@ namespace Project_Euler.Problema151
 {
     class MemoriaParaP151
     {
-        private List<int> nodo;
+        public List<int> nodo { get; }
 
-        private List<int> numBranchesPerQuantityOfSinglesSheets { get; }
+        public List<int> numBranchesPerQuantityOfSinglesSheets { get; }
 
-        private int numTotalBranches { get; }
+        public int numTotalBranches { get; }
 
         public MemoriaParaP151()
         {

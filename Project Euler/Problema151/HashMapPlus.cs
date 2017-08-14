@@ -8,33 +8,21 @@ namespace Project_Euler.Problema151
 {
     class HashMapPlus
     {
-        public List<MemoriaParaP151>[,] HashMapP;
-
-        private MemoriaParaP151 nodeAux;
+        private List<MemoriaParaP151> ListMemories;
 
         public HashMapPlus ()
         {
-            HashMapP = new List<MemoriaParaP151>[9,6];
+            ListMemories = new List<MemoriaParaP151>();
         }
 
         public void Add (MemoriaParaP151 memory)
         {
-            if (HashMapP[memory.nodo.Count, memory.nodo[0]] == null)
-                HashMapP[memory.nodo.Count, memory.nodo[0]] = new List<MemoriaParaP151>();
-
-            HashMapP[memory.nodo.Count, memory.nodo[0]].Add(memory);
+            ListMemories.Add(memory);
         }
 
         public MemoriaParaP151 Find (List<int> node)
         {
-            try
-            {
-                return HashMapP[node.Count, node[0]].Find(innerNode => innerNode.nodo.SequenceEqual(node)); ;
-            }
-            catch (NullReferenceException)
-            {
-                return null;
-            }
+            return ListMemories.Find(n => n.nodo.SequenceEqual(node));
         }
     }
 }
