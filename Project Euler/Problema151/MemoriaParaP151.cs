@@ -8,22 +8,24 @@ namespace Project_Euler.Problema151
 {
     class MemoriaParaP151
     {
-        public List<int> nodo;
+        private List<int> nodo;
 
-        public int numSinglesSheetsToLeaf = 0;
+        private List<int> numBranchesPerQuantityOfSinglesSheets { get; }
 
-        public int numCutsInNodeToLeaf = 0;
+        private int numTotalBranches { get; }
 
         public MemoriaParaP151()
         {
             this.nodo = new List<int>();
+            this.numBranchesPerQuantityOfSinglesSheets = new List<int> { 0, 0, 0, 0 };
+            this.numTotalBranches = 0;
         }
 
-        public MemoriaParaP151(List<int> nodo, int numSinglesSheetsToLeaf, int numCutsInNodeToLeaf)
+        public MemoriaParaP151(List<int> nodo, List<int> numBranchesPerQuantityOfSinglesSheets)
         {
             this.nodo = nodo;
-            this.numSinglesSheetsToLeaf = numSinglesSheetsToLeaf;
-            this.numCutsInNodeToLeaf = numCutsInNodeToLeaf;
+            this.numBranchesPerQuantityOfSinglesSheets = numBranchesPerQuantityOfSinglesSheets;
+            this.numTotalBranches = numBranchesPerQuantityOfSinglesSheets[0] + numBranchesPerQuantityOfSinglesSheets[1] + numBranchesPerQuantityOfSinglesSheets[2] + numBranchesPerQuantityOfSinglesSheets [3];
         }
     }
 }

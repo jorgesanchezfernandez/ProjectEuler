@@ -12,9 +12,14 @@ namespace Project_Euler.Utils
 
         private bool Leaf;
 
-        public int numSinglesSheetsToLeaf;
+        public List<int> numBranchesPerQuantityOfSinglesSheets { get; set; }
 
-        public int numCutsInNodeToLeaf;
+        public int numTotalBranches
+        {
+            get {
+                    return numBranchesPerQuantityOfSinglesSheets[0] + numBranchesPerQuantityOfSinglesSheets[1] + numBranchesPerQuantityOfSinglesSheets[2] + numBranchesPerQuantityOfSinglesSheets[3];
+                }
+        }
 
         public NTree(List<int> data)
         {
@@ -22,9 +27,7 @@ namespace Project_Euler.Utils
 
             this.children = new LinkedList<NTree<List<int>>>();
 
-            numSinglesSheetsToLeaf = 0;
-
-            numCutsInNodeToLeaf = 0;
+            this.numBranchesPerQuantityOfSinglesSheets = new List<int> { 0, 0, 0, 0 };
 
             Leaf = data.Count == 1 && data[0] == 5;
         }
@@ -46,7 +49,7 @@ namespace Project_Euler.Utils
              return children;
         }
 
-public List<int> GetNode()
+        public List<int> GetNode()
         {
             return data;
         }
