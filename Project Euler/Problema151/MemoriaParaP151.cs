@@ -10,22 +10,19 @@ namespace Project_Euler.Problema151
     {
         public List<int> nodo { get; }
 
-        public List<int> numBranchesPerQuantityOfSinglesSheets { get; }
+        public List<List<double>> probabilityNodeToleafPerSinglesSheets { get; set; }
 
-        public int numTotalBranches { get; }
 
         public MemoriaParaP151()
         {
             this.nodo = new List<int>();
-            this.numBranchesPerQuantityOfSinglesSheets = new List<int> { 0, 0, 0, 0 };
-            this.numTotalBranches = 0;
+            this.probabilityNodeToleafPerSinglesSheets = new List<List<double>>();
         }
 
-        public MemoriaParaP151(List<int> nodo, List<int> numBranchesPerQuantityOfSinglesSheets)
+        public MemoriaParaP151(List<int> nodo, List<List<double>> probabilityNodeToleafPerSinglesSheets)
         {
             this.nodo = nodo;
-            this.numBranchesPerQuantityOfSinglesSheets = numBranchesPerQuantityOfSinglesSheets;
-            this.numTotalBranches = numBranchesPerQuantityOfSinglesSheets[0] + numBranchesPerQuantityOfSinglesSheets[1] + numBranchesPerQuantityOfSinglesSheets[2] + numBranchesPerQuantityOfSinglesSheets [3];
+            this.probabilityNodeToleafPerSinglesSheets = probabilityNodeToleafPerSinglesSheets;
         }
     }
 }
