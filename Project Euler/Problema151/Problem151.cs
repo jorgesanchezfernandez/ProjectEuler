@@ -81,8 +81,6 @@ namespace Project_Euler
 
                         CalculateNextNode(NumSingleSheets, ref newTree, probability);
 
-                        
-
                     //if (Tree.IsSolitary)
                     //{
                     //    Tree.probabilityNodeToleafPerSinglesSheets[NumSingleSheets].Add(probability);
@@ -105,6 +103,7 @@ namespace Project_Euler
                     //    }
                     //}
 
+
                 }
 
                 //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
@@ -118,6 +117,7 @@ namespace Project_Euler
 
                     //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
                     //memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPerSinglesSheets));
+
                 }
                           
             //}

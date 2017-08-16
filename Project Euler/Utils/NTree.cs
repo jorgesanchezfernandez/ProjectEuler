@@ -2,6 +2,7 @@
 
 namespace Project_Euler.Utils
 {
+    using System;
     using System.Linq;
 
     public class NTree<T>
@@ -18,7 +19,7 @@ namespace Project_Euler.Utils
         {
             this.data = data;
 
-            this.children = new LinkedList<NTree<List<int>>>();
+            children = new LinkedList<NTree<List<int>>>();
 
             this.probabilityNodeToleafPerSinglesSheets = new List<List<double>>();
 
@@ -40,6 +41,11 @@ namespace Project_Euler.Utils
         public LinkedList<NTree<List<int>>> GetChildren()
         {
              return children;
+        }
+
+        public int NumOfChildren()
+        {
+             return children.Count;
         }
 
         public List<int> GetNode()
