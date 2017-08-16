@@ -66,7 +66,7 @@ namespace Project_Euler
 
                 if (!Tree.IsLeaf)
                 {
-                    Tree.numBranchesPerQuantityOfSinglesSheets = new List<int> { 0, 0, 0, 0 };
+                    Tree.probabilityOfFindingSingleSheetPerQuantity = new List<int> { 0, 0, 0, 0 };
 
                     for (var i = Tree.GetNode().Count - 1; i >= 0; i--)
                     {
@@ -80,28 +80,28 @@ namespace Project_Euler
                         {
                             for (var j = 0; j <= NumSingleSheets - 1; j++)
                             {
-                                Tree.numBranchesPerQuantityOfSinglesSheets[j + 1] += newTree.numBranchesPerQuantityOfSinglesSheets[j];
+                                Tree.probabilityOfFindingSingleSheetPerQuantity[j + 1] += newTree.probabilityOfFindingSingleSheetPerQuantity[j];
                             }
                         }
                         else
                         {
                             for (var j = 0; j <= NumSingleSheets; j++)
                             {
-                                Tree.numBranchesPerQuantityOfSinglesSheets[j] += newTree.numBranchesPerQuantityOfSinglesSheets[j];
+                                Tree.probabilityOfFindingSingleSheetPerQuantity[j] += newTree.probabilityOfFindingSingleSheetPerQuantity[j];
                             }
                         }
                         
                     }
 
                     //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
-                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.numBranchesPerQuantityOfSinglesSheets));
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityOfFindingSingleSheetPerQuantity));
                 }
                 else
                 {
-                    Tree.numBranchesPerQuantityOfSinglesSheets[0]++;
+                    Tree.probabilityOfFindingSingleSheetPerQuantity[0]++;
 
                     //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
-                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.numBranchesPerQuantityOfSinglesSheets));
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityOfFindingSingleSheetPerQuantity));
                 }
                           
             }

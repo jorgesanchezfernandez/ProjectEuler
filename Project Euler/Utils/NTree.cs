@@ -2,6 +2,7 @@
 
 namespace Project_Euler.Utils
 {
+    using System;
     using System.Linq;
 
     public class NTree<T>
@@ -12,12 +13,32 @@ namespace Project_Euler.Utils
 
         private bool Leaf;
 
-        public List<int> numBranchesPerQuantityOfSinglesSheets { get; set; }
+        private int numSingleSheetInChildren
+        {
+            get
+            {
+                var numSingleSheets = 0;
+                foreach (NTree<List<int>> n in children) 
+                    if (n.IsSolitary == true) 
+                        numSingleSheets ++;
+                return numSingleSheets;
+            }
+        }
 
-        public int numTotalBranches
+
+        public double probabilityInNode {
+            get
+            {
+                return 1 / double.Parse(NumOfChildren().ToString());
+            }
+        }
+
+        public List<int> probabilityOfFindingSingleSheetPerQuantity { get; set; }
+
+        public int expectedNumber
         {
             get {
-                    return numBranchesPerQuantityOfSinglesSheets[0] + numBranchesPerQuantityOfSinglesSheets[1] + numBranchesPerQuantityOfSinglesSheets[2] + numBranchesPerQuantityOfSinglesSheets[3];
+                    return probabilityOfFindingSingleSheetPerQuantity[1] + 2 * probabilityOfFindingSingleSheetPerQuantity[2] + 3 * probabilityOfFindingSingleSheetPerQuantity[3];
                 }
             set {
             }
@@ -27,9 +48,9 @@ namespace Project_Euler.Utils
         {
             this.data = data;
 
-            this.children = new LinkedList<NTree<List<int>>>();
+            children = new LinkedList<NTree<List<int>>>();
 
-            this.numBranchesPerQuantityOfSinglesSheets = new List<int> { 0, 0, 0, 0 };
+            probabilityOfFindingSingleSheetPerQuantity = new List<int> { 0, 0, 0, 0 };
 
             Leaf = data.Count == 1 && data[0] == 5;
         }
@@ -49,6 +70,11 @@ namespace Project_Euler.Utils
         public LinkedList<NTree<List<int>>> GetChildren()
         {
              return children;
+        }
+
+        public int NumOfChildren()
+        {
+             return children.Count;
         }
 
         public List<int> GetNode()
