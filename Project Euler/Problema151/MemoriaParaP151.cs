@@ -10,19 +10,28 @@ namespace Project_Euler.Problema151
     {
         public List<int> nodo { get; }
 
-        public List<List<double>> probabilityNodeToleafPerSinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer0SinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer1SinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer2SinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer3SinglesSheets { get; set; }
 
 
         public MemoriaParaP151()
         {
             this.nodo = new List<int>();
-            this.probabilityNodeToleafPerSinglesSheets = new List<List<double>>();
+            this.probabilityNodeToleafPer0SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer1SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer2SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer3SinglesSheets = new List<double>();
         }
 
-        public MemoriaParaP151(List<int> nodo, List<List<double>> probabilityNodeToleafPerSinglesSheets)
+        public MemoriaParaP151(List<int> nodo, List<double> probabilityNodeToleafPer0SinglesSheets, List<double> probabilityNodeToleafPer1SinglesSheets, List<double> probabilityNodeToleafPer2SinglesSheets, List<double> probabilityNodeToleafPer3SinglesSheets)
         {
             this.nodo = nodo;
-            this.probabilityNodeToleafPerSinglesSheets = probabilityNodeToleafPerSinglesSheets;
+            this.probabilityNodeToleafPer0SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer1SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer2SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer3SinglesSheets = new List<double>();
         }
     }
 }

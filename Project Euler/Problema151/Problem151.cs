@@ -11,13 +11,12 @@ namespace Project_Euler
 
     class Problem151
     {
-        public static NTree<List<int>> Tree = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
+        public static NTree<List<int>> Tree = new NTree<List<int>>(new List<int> { 4, 5 });
 
         public static HashMapPlus memory = new HashMapPlus();
 
-        //public static List<List<double>> TotalProbabilityPerSinglesSheets = new List<List<double>>();
-
         public static List<double> TotalProbabilityPerSinglesSheets = new List<double> { 0.0, 0.0, 0.0, 0.0};
+
         static void Main(string[] args)
         {
             // Inicia el contador:
@@ -30,14 +29,6 @@ namespace Project_Euler
             CalculateNextNode(NumTotalSingleSheets, ref Tree, probability);
 
             var SumProbabilityPerSingleSheet = new List<double>();
-
-            //for (var i = 1; i <= 3; i++)
-            //{
-            //    foreach (var element in TotalProbabilityPerSinglesSheets[i])
-            //    {
-            //        SumProbabilityPerSingleSheet[i] += element;
-            //    }
-            //}
 
             var expectedNumberOfTimes = 0.0;
 
@@ -57,78 +48,132 @@ namespace Project_Euler
             Console.ReadKey();
         }
 
-        public static void CalculateNextNode (int NumSingleSheets, ref NTree<List<int>> Tree, double probability)
+        public static bool CalculateNextNode (int NumSingleSheets, ref NTree<List<int>> Tree, double probability)
         {
-            //var savedNode = memory.Find(Tree.GetNode());
-            //var found = savedNode != null;
+            var savedNode = memory.Find(Tree.GetNode());
+            var found = savedNode != null;
 
-            //if (!found)
-            //{
+            if (!found)
+            {
+          
                 if (Tree.IsSolitary)
                     NumSingleSheets++;
 
                 if (!Tree.IsLeaf)
                 {
-                //for (var j = 0; j <= 3; j++)
-                //{
-                //    Tree.probabilityNodeToleafPerSinglesSheets[j] = new List<double> ();
-                //}
-                probability = probability * (1.0 / double.Parse(Tree.GetNode().Count.ToString()));
-                for (var i = Tree.GetNode().Count - 1; i >= 0; i--)
+                    var nodeProbability = (1.0 / double.Parse(Tree.GetNode().Count.ToString()));
+                    probability = probability * nodeProbability;
+
+                    for (var i = Tree.GetNode().Count - 1; i >= 0; i--)
                     {
                         var newTree = new NTree<List<int>>(Tree.GenerateNewNode(i));
-                        Tree.AddChild(newTree.GetNode());
 
                         CalculateNextNode(NumSingleSheets, ref newTree, probability);
 
-                    //if (Tree.IsSolitary)
-                    //{
-                    //    Tree.probabilityNodeToleafPerSinglesSheets[NumSingleSheets].Add(probability);
-                    //    for (var j = 0; j <= NumSingleSheets - 1; j++)
-                    //    {
-                    //        foreach (var element in newTree.probabilityNodeToleafPerSinglesSheets[j])
-                    //        {
-                    //            Tree.probabilityNodeToleafPerSinglesSheets[j + 1].Add(element);
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    for (var j = 0; j <= NumSingleSheets; j++)
-                    //    {
-                    //        foreach (var element in newTree.probabilityNodeToleafPerSinglesSheets[j])
-                    //        {
-                    //            Tree.probabilityNodeToleafPerSinglesSheets[j].Add(element);
-                    //        }
-                    //    }
-                    //}
+                        if (Tree.IsSolitary)
+                        {
+                            for (var j = 0; j <= NumSingleSheets - 1; j++)
+                            {
+                                foreach (var element in newTree.probabilityNodeToleafPer0SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer1SinglesSheets.Add(element);
+                                }
+                                foreach (var element in newTree.probabilityNodeToleafPer1SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer2SinglesSheets.Add(element);
+                                }
+                                foreach (var element in newTree.probabilityNodeToleafPer2SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer3SinglesSheets.Add(element);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (var j = 0; j <= NumSingleSheets; j++)
+                            {
+                                foreach (var element in newTree.probabilityNodeToleafPer0SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer0SinglesSheets.Add(element);
+                                }
+                                foreach (var element in newTree.probabilityNodeToleafPer1SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer1SinglesSheets.Add(element);
+                                }
+                                foreach (var element in newTree.probabilityNodeToleafPer2SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer2SinglesSheets.Add(element);
+                                }
+                                foreach (var element in newTree.probabilityNodeToleafPer3SinglesSheets)
+                                {
+                                    Tree.probabilityNodeToleafPer3SinglesSheets.Add(element);
+                                }
+                            }
+                        }
+                        switch (NumSingleSheets)
+                        {
+                            case 0:
+                                Tree.probabilityNodeToleafPer0SinglesSheets.Add(nodeProbability);
+                                break;
+                            case 1:
+                                Tree.probabilityNodeToleafPer1SinglesSheets.Add(nodeProbability);
+                                break;
+                            case 2:
+                                Tree.probabilityNodeToleafPer2SinglesSheets.Add(nodeProbability);
+                                break;
+                            case 3:
+                                Tree.probabilityNodeToleafPer3SinglesSheets.Add(nodeProbability);
+                                break;
+                        }                     
+                    }
 
-
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPer0SinglesSheets, Tree.probabilityNodeToleafPer1SinglesSheets, Tree.probabilityNodeToleafPer2SinglesSheets, Tree.probabilityNodeToleafPer3SinglesSheets));
                 }
-
-                //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
-                //memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPerSinglesSheets));
-            }
                 else
                 {
                     TotalProbabilityPerSinglesSheets[NumSingleSheets] += probability;
 
-                    //Tree.probabilityNodeToleafPerSinglesSheets[].Add(probability);
+                    if (Tree.GetNode()[0] == 4)
+                        Tree.probabilityNodeToleafPer1SinglesSheets.Add(1.0);
+                    else
+                        Tree.probabilityNodeToleafPer0SinglesSheets.Add(0.5);
 
-                    //Si sale el 2 ya podemos salir y si sale el 3 en la primera rama podemos salir
-                    //memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPerSinglesSheets));
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPer0SinglesSheets, Tree.probabilityNodeToleafPer1SinglesSheets, Tree.probabilityNodeToleafPer2SinglesSheets, Tree.probabilityNodeToleafPer3SinglesSheets));
 
                 }
-                          
-            //}
-            //else
-            //{
-            //    Tree.numBranchesPerQuantityOfSinglesSheets = savedNode.numBranchesPerQuantityOfSinglesSheets;
-            //    Tree.numTotalBranches = savedNode.numTotalBranches;
-            //    Tree.numCuts = savedNode.numCuts;
-            //}
 
-            //return found;
+            }
+            else
+            {
+                Tree.probabilityNodeToleafPer0SinglesSheets = savedNode.probabilityNodeToleafPer0SinglesSheets;
+                Tree.probabilityNodeToleafPer1SinglesSheets = savedNode.probabilityNodeToleafPer1SinglesSheets;
+                Tree.probabilityNodeToleafPer2SinglesSheets = savedNode.probabilityNodeToleafPer2SinglesSheets;
+                Tree.probabilityNodeToleafPer3SinglesSheets = savedNode.probabilityNodeToleafPer3SinglesSheets;
+
+                var probabilidadEn0 = probability;
+                foreach (var element in savedNode.probabilityNodeToleafPer0SinglesSheets)
+                {
+                    TotalProbabilityPerSinglesSheets[0] += probabilidadEn0 * element;
+                }
+
+                var probabilidadEn1 = probability;
+                foreach (var element in savedNode.probabilityNodeToleafPer1SinglesSheets)
+                {
+                    TotalProbabilityPerSinglesSheets[1] += probabilidadEn1 * element;
+                }
+                var probabilidadEn2 = probability;
+                foreach (var element in savedNode.probabilityNodeToleafPer2SinglesSheets)
+                {
+                    TotalProbabilityPerSinglesSheets[2] += probabilidadEn2 * element;
+                }
+                var probabilidadEn3 = probability;
+                foreach (var element in savedNode.probabilityNodeToleafPer3SinglesSheets)
+                {
+                    TotalProbabilityPerSinglesSheets[3] += probabilidadEn3 * element;
+                }
+            }
+
+            return found;
         }
     }
 }

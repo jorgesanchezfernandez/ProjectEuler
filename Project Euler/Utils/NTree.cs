@@ -9,43 +9,24 @@ namespace Project_Euler.Utils
     {
         private List<int> data;
 
-        private LinkedList<NTree<List<int>>> children;
-
         private bool Leaf;
 
-        public List<List<double>> probabilityNodeToleafPerSinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer0SinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer1SinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer2SinglesSheets { get; set; }
+        public List<double> probabilityNodeToleafPer3SinglesSheets { get; set; }
+
 
         public NTree(List<int> data)
         {
             this.data = data;
 
-            children = new LinkedList<NTree<List<int>>>();
-
-            this.probabilityNodeToleafPerSinglesSheets = new List<List<double>>();
+            this.probabilityNodeToleafPer0SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer1SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer2SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPer3SinglesSheets = new List<double>();
 
             Leaf = data.Count == 1 && data[0] == 5;
-        }
-
-        public void AddChild(List<int> data)
-        {
-            children.AddFirst(new NTree<List<int>>(data));
-        }
-
-        public NTree<List<int>> GetChild(int i)
-        {
-             foreach (NTree<List<int>> n in children)
-                if (--i == 0)
-                     return n;
-            return null;
-        }
-        public LinkedList<NTree<List<int>>> GetChildren()
-        {
-             return children;
-        }
-
-        public int NumOfChildren()
-        {
-             return children.Count;
         }
 
         public List<int> GetNode()
@@ -68,6 +49,7 @@ namespace Project_Euler.Utils
                 return data.Count == 1 && data[0] != 5;
             }
         }
+
         public List<int> GenerateNewNode(int i)
         {
             var nuevoNodo = new List<int>();
@@ -97,25 +79,5 @@ namespace Project_Euler.Utils
             nuevoNodo.Sort(); // Importante para no repetir las busquedas
             return nuevoNodo;
         }
-
-        //public void Traverse(NTree<T> node)
-        //{
-        //    if (!IsRepeated())
-        //    {
-        //        if(node.IsLeaf)
-        //        {
-        //            SetValues();
-        //        }else
-        //        {
-        //            foreach (NTree<T> kid in node.children)
-        //            {
-        //                Traverse(kid);
-        //            }
-        //        } 
-        //    }else
-        //    {
-        //        GetValues();
-        //    }
-        //}
     }
 }
