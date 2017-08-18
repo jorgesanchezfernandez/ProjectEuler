@@ -8,7 +8,7 @@ namespace Project_Euler.Problema151
 {
     class MemoriaParaP151
     {
-        public List<int> nodo { get; }
+        public List<int> nodo { get; set; }
 
         public List<double> probabilityNodeToleafPer0SinglesSheets { get; set; }
         public List<double> probabilityNodeToleafPer1SinglesSheets { get; set; }

@@ -7,6 +7,5 @@ C:\Users\Spartacus\Documents\Visual Studio 2015\Projects\ProjectEuler\Project Eu
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\bin\Debug\Project Euler.exe.config
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\bin\Debug\Project Euler.exe
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\bin\Debug\Project Euler.pdb
-C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\obj\Debug\Project Euler.csprojResolveAssemblyReference.cache
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\obj\Debug\Project Euler.exe
 C:\Users\jfernandez\Documents\Visual Studio 2013\Projects\Project Euler\Project Euler\obj\Debug\Project Euler.pdb

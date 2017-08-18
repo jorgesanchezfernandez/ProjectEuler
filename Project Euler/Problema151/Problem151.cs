@@ -113,16 +113,40 @@ namespace Project_Euler
                         switch (NumSingleSheets)
                         {
                             case 0:
-                                Tree.probabilityNodeToleafPer0SinglesSheets.Add(nodeProbability);
+                                var listAux0 = new List<double>();
+                                foreach (var element in Tree.probabilityNodeToleafPer0SinglesSheets)
+                                {
+                                    var newValue = element * nodeProbability;
+                                    listAux0.Add(newValue);
+                                }
+                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux0;
                                 break;
                             case 1:
-                                Tree.probabilityNodeToleafPer1SinglesSheets.Add(nodeProbability);
+                                var listAux1 = new List<double>();
+                                foreach (var element in Tree.probabilityNodeToleafPer1SinglesSheets)
+                                {
+                                    var newValue = element * nodeProbability;
+                                    listAux1.Add(newValue);
+                                }
+                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux1;
                                 break;
                             case 2:
-                                Tree.probabilityNodeToleafPer2SinglesSheets.Add(nodeProbability);
+                                var listAux2 = new List<double>();
+                                foreach (var element in Tree.probabilityNodeToleafPer1SinglesSheets)
+                                {
+                                    var newValue = element * nodeProbability;
+                                    listAux2.Add(newValue);
+                                }
+                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux2;
                                 break;
                             case 3:
-                                Tree.probabilityNodeToleafPer3SinglesSheets.Add(nodeProbability);
+                                var listAux3 = new List<double>();
+                                foreach (var element in Tree.probabilityNodeToleafPer1SinglesSheets)
+                                {
+                                    var newValue = element * nodeProbability;
+                                    listAux3.Add(newValue);
+                                }
+                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux3;
                                 break;
                         }                     
                     }
@@ -133,10 +157,8 @@ namespace Project_Euler
                 {
                     TotalProbabilityPerSinglesSheets[NumSingleSheets] += probability;
 
-                    if (Tree.GetNode()[0] == 4)
-                        Tree.probabilityNodeToleafPer1SinglesSheets.Add(1.0);
-                    else
-                        Tree.probabilityNodeToleafPer0SinglesSheets.Add(0.5);
+                    Tree.probabilityNodeToleafPer1SinglesSheets.Add(1.0);
+
 
                     memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPer0SinglesSheets, Tree.probabilityNodeToleafPer1SinglesSheets, Tree.probabilityNodeToleafPer2SinglesSheets, Tree.probabilityNodeToleafPer3SinglesSheets));
 
