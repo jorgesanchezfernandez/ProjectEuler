@@ -11,7 +11,7 @@ namespace Project_Euler
 
     class Problem151
     {
-        public static NTree<List<int>> Tree = new NTree<List<int>>(new List<int> { 4, 5 });
+        public static NTree<List<int>> Tree = new NTree<List<int>>(new List<int> {2, 3, 4, 5 });
 
         public static HashMapPlus memory = new HashMapPlus();
 
@@ -54,8 +54,7 @@ namespace Project_Euler
             var found = savedNode != null;
 
             if (!found)
-            {
-          
+            {         
                 if (Tree.IsSolitary)
                     NumSingleSheets++;
 
@@ -157,8 +156,7 @@ namespace Project_Euler
                 {
                     TotalProbabilityPerSinglesSheets[NumSingleSheets] += probability;
 
-                    Tree.probabilityNodeToleafPer1SinglesSheets.Add(1.0);
-
+                    Tree.probabilityNodeToleafPer0SinglesSheets.Add(1.0);
 
                     memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPer0SinglesSheets, Tree.probabilityNodeToleafPer1SinglesSheets, Tree.probabilityNodeToleafPer2SinglesSheets, Tree.probabilityNodeToleafPer3SinglesSheets));
 
