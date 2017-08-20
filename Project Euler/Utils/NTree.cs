@@ -11,20 +11,17 @@ namespace Project_Euler.Utils
 
         private bool Leaf;
 
-        public List<double> probabilityNodeToleafPer0SinglesSheets { get; set; }
-        public List<double> probabilityNodeToleafPer1SinglesSheets { get; set; }
-        public List<double> probabilityNodeToleafPer2SinglesSheets { get; set; }
-        public List<double> probabilityNodeToleafPer3SinglesSheets { get; set; }
-
+        public List<List<double>> probabilityNodeToleafPerSinglesSheets { get; set; }
 
         public NTree(List<int> data)
         {
             this.data = data;
 
-            this.probabilityNodeToleafPer0SinglesSheets = new List<double>();
-            this.probabilityNodeToleafPer1SinglesSheets = new List<double>();
-            this.probabilityNodeToleafPer2SinglesSheets = new List<double>();
-            this.probabilityNodeToleafPer3SinglesSheets = new List<double>();
+            this.probabilityNodeToleafPerSinglesSheets = new List<List<double>>();
+            this.probabilityNodeToleafPerSinglesSheets.Add(new List<double>());
+            this.probabilityNodeToleafPerSinglesSheets.Add(new List<double>());
+            this.probabilityNodeToleafPerSinglesSheets.Add(new List<double>());
+            this.probabilityNodeToleafPerSinglesSheets.Add(new List<double>());
 
             Leaf = data.Count == 1 && data[0] == 5;
         }

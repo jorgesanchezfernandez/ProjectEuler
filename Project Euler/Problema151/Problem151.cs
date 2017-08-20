@@ -11,7 +11,7 @@ namespace Project_Euler
 
     class Problem151
     {
-        public static NTree<List<int>> Tree = new NTree<List<int>>(new List<int> {2, 3, 4, 5 });
+        public static NTree<List<int>> Tree = new NTree<List<int>>(new List<int> { 2, 3, 4, 5 });
 
         public static HashMapPlus memory = new HashMapPlus();
 
@@ -31,6 +31,17 @@ namespace Project_Euler
             var SumProbabilityPerSingleSheet = new List<double>();
 
             var expectedNumberOfTimes = 0.0;
+
+            for (var i = 0; i <= 3; i++)
+            {
+                var probabilityAux = 0.0;
+                foreach (var element in Tree.probabilityNodeToleafPerSinglesSheets[i])
+                {
+
+                    probabilityAux += element;
+                }
+                TotalProbabilityPerSinglesSheets[i] = probabilityAux;
+            }
 
             for (var i = 1; i <= 3; i++)
             {
@@ -54,9 +65,7 @@ namespace Project_Euler
             var found = savedNode != null;
 
             if (!found)
-            {         
-                if (Tree.IsSolitary)
-                    NumSingleSheets++;
+            {
 
                 if (!Tree.IsLeaf)
                 {
@@ -69,128 +78,33 @@ namespace Project_Euler
 
                         CalculateNextNode(NumSingleSheets, ref newTree, probability);
 
+                        var k = 0;
                         if (Tree.IsSolitary)
                         {
-                            for (var j = 0; j <= NumSingleSheets - 1; j++)
-                            {
-                                foreach (var element in newTree.probabilityNodeToleafPer0SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer1SinglesSheets.Add(element);
-                                }
-                                foreach (var element in newTree.probabilityNodeToleafPer1SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer2SinglesSheets.Add(element);
-                                }
-                                foreach (var element in newTree.probabilityNodeToleafPer2SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer3SinglesSheets.Add(element);
-                                }
-                            }
+                            k = 1;
                         }
-                        else
+
+                        for (var j = 0; j <= 2; j++)
                         {
-                            for (var j = 0; j <= NumSingleSheets; j++)
+                            foreach (var element in newTree.probabilityNodeToleafPerSinglesSheets[j])
                             {
-                                foreach (var element in newTree.probabilityNodeToleafPer0SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer0SinglesSheets.Add(element);
-                                }
-                                foreach (var element in newTree.probabilityNodeToleafPer1SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer1SinglesSheets.Add(element);
-                                }
-                                foreach (var element in newTree.probabilityNodeToleafPer2SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer2SinglesSheets.Add(element);
-                                }
-                                foreach (var element in newTree.probabilityNodeToleafPer3SinglesSheets)
-                                {
-                                    Tree.probabilityNodeToleafPer3SinglesSheets.Add(element);
-                                }
+                                Tree.probabilityNodeToleafPerSinglesSheets[j + k].Add(nodeProbability * element);                             
                             }
-                        }
-                        switch (NumSingleSheets)
-                        {
-                            case 0:
-                                var listAux0 = new List<double>();
-                                foreach (var element in Tree.probabilityNodeToleafPer0SinglesSheets)
-                                {
-                                    var newValue = element * nodeProbability;
-                                    listAux0.Add(newValue);
-                                }
-                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux0;
-                                break;
-                            case 1:
-                                var listAux1 = new List<double>();
-                                foreach (var element in Tree.probabilityNodeToleafPer1SinglesSheets)
-                                {
-                                    var newValue = element * nodeProbability;
-                                    listAux1.Add(newValue);
-                                }
-                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux1;
-                                break;
-                            case 2:
-                                var listAux2 = new List<double>();
-                                foreach (var element in Tree.probabilityNodeToleafPer1SinglesSheets)
-                                {
-                                    var newValue = element * nodeProbability;
-                                    listAux2.Add(newValue);
-                                }
-                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux2;
-                                break;
-                            case 3:
-                                var listAux3 = new List<double>();
-                                foreach (var element in Tree.probabilityNodeToleafPer1SinglesSheets)
-                                {
-                                    var newValue = element * nodeProbability;
-                                    listAux3.Add(newValue);
-                                }
-                                Tree.probabilityNodeToleafPer0SinglesSheets = listAux3;
-                                break;
-                        }                     
+                        }                             
                     }
 
-                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPer0SinglesSheets, Tree.probabilityNodeToleafPer1SinglesSheets, Tree.probabilityNodeToleafPer2SinglesSheets, Tree.probabilityNodeToleafPer3SinglesSheets));
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPerSinglesSheets));
                 }
                 else
                 {
-                    TotalProbabilityPerSinglesSheets[NumSingleSheets] += probability;
+                    Tree.probabilityNodeToleafPerSinglesSheets[0].Add(1.0);
 
-                    Tree.probabilityNodeToleafPer0SinglesSheets.Add(1.0);
-
-                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPer0SinglesSheets, Tree.probabilityNodeToleafPer1SinglesSheets, Tree.probabilityNodeToleafPer2SinglesSheets, Tree.probabilityNodeToleafPer3SinglesSheets));
-
+                    memory.Add(new MemoriaParaP151(Tree.GetNode(), Tree.probabilityNodeToleafPerSinglesSheets));
                 }
-
             }
             else
             {
-                Tree.probabilityNodeToleafPer0SinglesSheets = savedNode.probabilityNodeToleafPer0SinglesSheets;
-                Tree.probabilityNodeToleafPer1SinglesSheets = savedNode.probabilityNodeToleafPer1SinglesSheets;
-                Tree.probabilityNodeToleafPer2SinglesSheets = savedNode.probabilityNodeToleafPer2SinglesSheets;
-                Tree.probabilityNodeToleafPer3SinglesSheets = savedNode.probabilityNodeToleafPer3SinglesSheets;
-
-                var probabilidadEn0 = probability;
-                foreach (var element in savedNode.probabilityNodeToleafPer0SinglesSheets)
-                {
-                    TotalProbabilityPerSinglesSheets[0] += probabilidadEn0 * element;
-                }
-
-                var probabilidadEn1 = probability;
-                foreach (var element in savedNode.probabilityNodeToleafPer1SinglesSheets)
-                {
-                    TotalProbabilityPerSinglesSheets[1] += probabilidadEn1 * element;
-                }
-                var probabilidadEn2 = probability;
-                foreach (var element in savedNode.probabilityNodeToleafPer2SinglesSheets)
-                {
-                    TotalProbabilityPerSinglesSheets[2] += probabilidadEn2 * element;
-                }
-                var probabilidadEn3 = probability;
-                foreach (var element in savedNode.probabilityNodeToleafPer3SinglesSheets)
-                {
-                    TotalProbabilityPerSinglesSheets[3] += probabilidadEn3 * element;
-                }
+                Tree.probabilityNodeToleafPerSinglesSheets = savedNode.probabilityNodeToleafPerSinglesSheets;
             }
 
             return found;
